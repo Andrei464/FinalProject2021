@@ -22,19 +22,24 @@ import javax.swing.JTextField;
 */
 class UI extends JFrame{
 
-    final int TWO    = 2;
-    final int FOUR   = 4;
-    final int MARGIN = 5;
-    final int SPACER = 10;
+    final int TWO           = 2;
+    final int FOUR          = 4;
+    final int MARGIN        = 5;
+    final int SPACER        = 10;
     
-    final int B_HEIGHT = SPACER * 3;    
-    final int B_WIDTH = SPACER * SPACER;
+    final int B_HEIGHT      = SPACER * 3;    
+    final int B_WIDTH       = SPACER * SPACER;
     
-    JTextField textbox = new JTextField();
-    JLabel imagePanel = new JLabel();
+    JTextField textbox      = new JTextField();
+    JLabel imagePanel       = new JLabel();
+    JButton removeWord      = new JButton();
+    JButton addWord         = new JButton();
+    JButton save            = new JButton();
+    JButton delete          = new JButton();
+    JButton enter           = new JButton();
+    JButton search          = new JButton();
+    List list               = new List();
     Icon icon;
-    JButton button = new JButton();
-    List list = new List();
     
     public UI(){
         instantiateUIElements();
@@ -94,14 +99,18 @@ class UI extends JFrame{
         list.setVisible(true);
         
         //Instantiate button
-        button.setBounds(20, 500, 60, 20);
-        button.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
-        this.add(button);
-        button.setVisible(true);
-        button.addActionListener(new ActionListener() {
+        delete.setBounds(20, 500, 60, 20);
+        delete.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
+        this.add(delete);
+        delete.setVisible(true);
+        delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                list.remove(0);
+                if(list.getSelectedIndex() < 0){}
+                else{
+                    list.remove(list.getSelectedIndex());
+                }
+                
             }
         });
                 
