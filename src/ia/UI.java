@@ -27,7 +27,7 @@ class UI extends JFrame{
     final int MARGIN        = 5;
     final int SPACER        = 10;
     
-    final int B_HEIGHT      = SPACER * 3;    
+    final int B_HEIGHT      = SPACER * 4;    
     final int B_WIDTH       = SPACER * SPACER;
     
     JTextField textbox      = new JTextField();
@@ -95,11 +95,12 @@ class UI extends JFrame{
         list.setBounds(imagePanel.getX() + imagePanel.getWidth() + SPACER,
             SPACER, this.getWidth() - imagePanel.getWidth() - (SPACER * FOUR)
             - MARGIN, 525);
+        list.add("",0);
         this.add(list);
         list.setVisible(true);
         
         //Instantiate button
-        delete.setBounds(20, 500, 60, 20);
+        delete.setBounds(SPACER, textbox.getY()+textbox.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
         delete.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
         this.add(delete);
         delete.setVisible(true);
@@ -109,8 +110,8 @@ class UI extends JFrame{
                 if(list.getSelectedIndex() < 0){}
                 else{
                     list.remove(list.getSelectedIndex());
+                    System.out.println(list.getSelectedIndex());
                 }
-                
             }
         });
                 
@@ -121,12 +122,10 @@ class UI extends JFrame{
         if(e.getKeyCode() == KeyEvent.VK_ENTER){
             if(textbox.getText().equals("")&& imagePanel.getIcon() != null){}
             else{
-                String test = list.toString();
-                System.out.println(test + "awd");
-                list.add("",0);
                 String line = list.getItem(0);
+                System.out.println(line);
                 list.remove(0);
-                list.add(textbox.getText() + ", " + line , 0);
+                list.add(textbox.getText() + ", " + line);
                 textbox.setText("");
             }
         }
@@ -135,7 +134,7 @@ class UI extends JFrame{
         }
     }
     
-    public void resizeToContainer(JLabel label) {
+    private void resizeToContainer(JLabel label) {
         int       width         = label.getWidth();     // get label width
         int       height        = label.getHeight();    // get label height
         ImageIcon originalIcon  = (ImageIcon)label.getIcon();   // get icon
