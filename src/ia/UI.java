@@ -1,6 +1,7 @@
 package ia;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.List;
 import java.awt.event.ActionEvent;
@@ -28,16 +29,17 @@ class UI extends JFrame{
     final int SPACER        = 10;
     
     final int B_HEIGHT      = SPACER * 4;    
-    final int B_WIDTH       = SPACER * SPACER;
+    final int B_WIDTH       = 145;
     
     JTextField textbox      = new JTextField();
-    JLabel imagePanel       = new JLabel();
+    JLabel  imagePanel      = new JLabel();
     JButton removeWord      = new JButton();
     JButton addWord         = new JButton();
     JButton save            = new JButton();
     JButton delete          = new JButton();
     JButton enter           = new JButton();
     JButton search          = new JButton();
+    Font    font            = new Font("Helvetica", 20, 20);
     List list               = new List();
     Icon icon;
     
@@ -104,6 +106,8 @@ class UI extends JFrame{
         //Instantiate button
         delete.setBounds(SPACER, textbox.getY()+textbox.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
         delete.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
+        delete.setText("Delete");
+        delete.setFont(font);
         this.add(delete);
         delete.setVisible(true);
         delete.addActionListener(new ActionListener() {
@@ -117,6 +121,24 @@ class UI extends JFrame{
             }
         });
                 
+        
+        //Instantiate button
+        enter.setBounds(delete.getX()+delete.getWidth()+SPACER, textbox.getY()+textbox.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
+        enter.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
+        this.add(enter);
+        enter.setText("Enter");
+        enter.setVisible(true);
+        enter.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(list.getSelectedIndex() < 0){}
+                else{
+                    list.remove(list.getSelectedIndex());
+                    System.out.println(list.getSelectedIndex());
+                }
+            }
+        });
+        
         this.setVisible(true);
     }
     
