@@ -68,6 +68,7 @@ class UI extends JFrame{
             "C:\\Users\\A.sholokhov\\Desktop\\Maid Outfit.png");
         imagePanel.setIcon(icon);
         resizeToContainer(imagePanel);
+        
         //Instantiate the text box
         textbox.setBounds(SPACER,
             imagePanel.getY() + imagePanel.getHeight() + SPACER,
@@ -91,6 +92,7 @@ class UI extends JFrame{
         });
         this.add(textbox);
         textbox.setVisible(true);
+        
         //instatiate list
         list.setBounds(imagePanel.getX() + imagePanel.getWidth() + SPACER,
             SPACER, this.getWidth() - imagePanel.getWidth() - (SPACER * FOUR)

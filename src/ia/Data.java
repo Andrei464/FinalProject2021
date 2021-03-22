@@ -1,5 +1,6 @@
 package ia;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import javax.swing.ImageIcon;
 
@@ -9,7 +10,7 @@ import javax.swing.ImageIcon;
 * @author Andrei S. 
 * @since Mar. 8, 2021 
 */
-public class Data {
+public class Data implements Serializable{
 
     String name;
     String url;
