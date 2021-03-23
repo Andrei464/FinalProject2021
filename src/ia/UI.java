@@ -8,6 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.IOException;
+import collections.LinkedList;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -30,7 +33,8 @@ class UI extends JFrame{
     
     final int B_HEIGHT      = SPACER * 4;    
     final int B_WIDTH       = 145;
-    
+    LinkedList<LinkedList<String>> linkedlist = new LinkedList<>();
+    FileHandler filehandler = new FileHandler();
     JTextField textbox      = new JTextField();
     JLabel  imagePanel      = new JLabel();
     JButton removeWord      = new JButton();
@@ -44,10 +48,34 @@ class UI extends JFrame{
     Icon icon;
     
     public UI(){
-        instantiateUIElements();
+        initUIElements();
+        LinkedList<LinkedList<String>> awd = new LinkedList<>();
+        for (int i = 0; i < 10; i++) {
+            LinkedList<String> list = new LinkedList<>();
+            awd.add(list);
+            for (int j = 0; j < 10; j++) {
+                list.add(j * i + "");
+            }
+        }
+        File file = new File("SavingTest.txt");
+        
+        try{
+            if(!file.exists()){
+                file.createNewFile();
+            }
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
+        
+        
+        
+        filehandler.saveObject(awd, file);
+        LinkedList newList = (LinkedList)filehandler.openObject(file);
+        System.out.println(newList.toString());
     }
     
-    private void instantiateUIElements(){
+    private void initUIElements(){
         //Instantiate the JFrame
         this.setSize(1000, 700);
         this.setLocationRelativeTo(null);
@@ -125,6 +153,7 @@ class UI extends JFrame{
         //Instantiate button
         enter.setBounds(delete.getX()+delete.getWidth()+SPACER, textbox.getY()+textbox.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
         enter.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
+        enter.setFont(font);
         this.add(enter);
         enter.setText("Enter");
         enter.setVisible(true);
