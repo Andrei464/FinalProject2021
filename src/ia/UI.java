@@ -3,6 +3,7 @@ package ia;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,14 +11,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
-import collections.LinkedList;
+import java.util.LinkedList;
+//import collections.LinkedList;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
+import javax.swing.JTextArea;
 /**
 * UI.java - 
 *
@@ -26,52 +28,52 @@ import javax.swing.JTextField;
 */
 class UI extends JFrame{
 
-    final int TWO           = 2;
-    final int FOUR          = 4;
-    final int MARGIN        = 5;
-    final int SPACER        = 10;
+    //Constant Variables
+    final int                       ZERO        = 0;
+    final int                       TWO         = 2;
+    final int                       FOUR        = 4;
+    final int                       MARGIN      = 5;
+    final int                       SPACER      = 10;
+    final int                       B_HEIGHT    = 40;    
+    final int                       B_WIDTH     = 145;
     
-    final int B_HEIGHT      = SPACER * 4;    
-    final int B_WIDTH       = 145;
-    LinkedList<LinkedList<String>> linkedlist = new LinkedList<>();
-    FileHandler filehandler = new FileHandler();
-    JTextField textbox      = new JTextField();
-    JLabel  imagePanel      = new JLabel();
-    JButton removeWord      = new JButton();
-    JButton addWord         = new JButton();
-    JButton save            = new JButton();
-    JButton delete          = new JButton();
-    JButton enter           = new JButton();
-    JButton search          = new JButton();
-    Font    font            = new Font("Helvetica", 20, 20);
-    List list               = new List();
-    Icon icon;
+    //Objects 
+    LinkedList<LinkedList<String>>  linkedlist  = new LinkedList<>();
+    FileHandler                     filehandler = new FileHandler();
+    
+    //UI Elements
+    JTextArea                       textbox     = new JTextArea();
+    JLabel                          imagePanel  = new JLabel();
+    JButton                         removeWord  = new JButton();
+    JButton                         addWord     = new JButton();
+    JButton                         save        = new JButton();
+    JButton                         delete      = new JButton();
+    JButton                         enter       = new JButton();
+    JButton                         search      = new JButton();
+    Font                            font        = new Font("Helvetica", 20, 20);
+    List                            list        = new List();
+    Icon                            icon;
     
     public UI(){
         initUIElements();
         LinkedList<LinkedList<String>> awd = new LinkedList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = ZERO; i < 10; i++) {
             LinkedList<String> list = new LinkedList<>();
             awd.add(list);
-            for (int j = 0; j < 10; j++) {
+            for (int j = ZERO; j < 10; j++) {
                 list.add(j * i + "");
             }
         }
         File file = new File("SavingTest.txt");
         
         try{
-            if(!file.exists()){
-                file.createNewFile();
-            }
+            if(!file.exists()) file.createNewFile();
         }
-        catch(IOException e){
-            System.out.println(e);
-        }
+        catch(IOException e){}
         
-        
-        
-        filehandler.saveObject(awd, file);
-        LinkedList newList = (LinkedList)filehandler.openObject(file);
+        //filehandler.saveObject(awd, file);
+        LinkedList<String> newList = 
+            (LinkedList<String>)filehandler.openObject(file);
         System.out.println(newList.toString());
     }
     
@@ -85,9 +87,6 @@ class UI extends JFrame{
         this.setLayout(null);
         
         //Instantiate JLabel
-//        imagePanel.setBounds(textbox.getX() - MARGIN,textbox.getY()-MARGIN,
-//            textbox.getWidth()  + MARGIN * TWO,
-//            textbox.getHeight() + MARGIN * TWO);
         imagePanel.setBounds(SPACER, SPACER, 300, 300);
         imagePanel.setOpaque(true);
         imagePanel.setBorder(
@@ -102,12 +101,14 @@ class UI extends JFrame{
         //Instantiate the text box
         textbox.setBounds(SPACER,
             imagePanel.getY() + imagePanel.getHeight() + SPACER,
-            imagePanel.getWidth(), SPACER + SPACER);
+            imagePanel.getWidth(), SPACER * FOUR);
+//        textbox.setMargin(m);/////////////////////////////////////////////////
         textbox.setOpaque(true);
         textbox.setCaretColor(Color.BLACK);
         textbox.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
+                keyPress(e);
             }
 
             @Override
@@ -123,16 +124,17 @@ class UI extends JFrame{
         this.add(textbox);
         textbox.setVisible(true);
         
-        //instatiate list
+        //Instantiate list
         list.setBounds(imagePanel.getX() + imagePanel.getWidth() + SPACER,
             SPACER, this.getWidth() - imagePanel.getWidth() - (SPACER * FOUR)
             - MARGIN, 525);
-        list.add("",0);
+        list.add("",ZERO);
         this.add(list);
         list.setVisible(true);
         
         //Instantiate button
-        delete.setBounds(SPACER, textbox.getY()+textbox.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
+        delete.setBounds(SPACER,
+            textbox.getY()+textbox.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
         delete.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
         delete.setText("Delete");
         delete.setFont(font);
@@ -141,17 +143,17 @@ class UI extends JFrame{
         delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(list.getSelectedIndex() < 0){}
+                if(list.getSelectedIndex() < ZERO){}
                 else{
-                    list.remove(list.getSelectedIndex());
-                    System.out.println(list.getSelectedIndex());
+                    deleteIndex();
                 }
             }
         });
                 
         
         //Instantiate button
-        enter.setBounds(delete.getX()+delete.getWidth()+SPACER, textbox.getY()+textbox.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
+        enter.setBounds(delete.getX()+delete.getWidth()+SPACER,
+            textbox.getY()+textbox.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
         enter.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
         enter.setFont(font);
         this.add(enter);
@@ -160,31 +162,37 @@ class UI extends JFrame{
         enter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(list.getSelectedIndex() < 0){}
+                if(list.getSelectedIndex() < ZERO){}
                 else{
-                    list.remove(list.getSelectedIndex());
-                    System.out.println(list.getSelectedIndex());
+                    deleteIndex();
                 }
             }
         });
         
+        //Once all is done and set, reveal the interface to the user
         this.setVisible(true);
+    }
+
+    private void deleteIndex() {
+        list.remove(list.getSelectedIndex());
     }
     
     private void keyPress(KeyEvent e){
         if(e.getKeyCode() == KeyEvent.VK_ENTER){
-            if(textbox.getText().equals("")&& imagePanel.getIcon() != null){}
+            if(textbox.getText().equals("")|| imagePanel.getIcon() != null){}
             else{
-                String line = list.getItem(0);
-                System.out.println(line);
-                list.remove(0);
-                list.add(textbox.getText() + ", " + line);
-                textbox.setText("");
+                enter();
             }
         }
         else{
             System.out.println(textbox.getText());
         }
+    }
+
+    private void enter() {
+        String line = list.getItem(ZERO);
+        list.add(textbox.getText() + ", " + line);
+        textbox.setText("");
     }
     
     private void resizeToContainer(JLabel label) {
@@ -228,7 +236,7 @@ class UI extends JFrame{
 //    }
 //    
 //    private int gdc(int p, int q) {
-//        if (q == 0) return p;
+//        if (q == ZERO) return p;
 //        else return gdc(q, p % q);
 //    }
 }
