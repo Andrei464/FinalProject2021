@@ -37,8 +37,10 @@ class UI extends JFrame{
     final int                       B_HEIGHT    = 40;    
     final int                       B_WIDTH     = 145;
     
+    final String                    fileName    = "SavingTest.txt";
+    
     //Objects 
-    LinkedList<LinkedList<String>>  linkedlist  = new LinkedList<>();
+    LinkedList<LinkedList<String>>  linkedList  = new LinkedList<>();
     FileHandler                     filehandler = new FileHandler();
     
     //UI Elements
@@ -56,25 +58,33 @@ class UI extends JFrame{
     
     public UI(){
         initUIElements();
-        LinkedList<LinkedList<String>> awd = new LinkedList<>();
-        for (int i = ZERO; i < 10; i++) {
-            LinkedList<String> list = new LinkedList<>();
-            awd.add(list);
-            for (int j = ZERO; j < 10; j++) {
-                list.add(j * i + "");
+        createList();
+    }
+
+    private void createList() {
+        try{
+            File file = new File(fileName);
+            if(!file.exists() || file.length() == 0) file.createNewFile();
+            else{
+                linkedList = 
+                (LinkedList<LinkedList<String>>)filehandler.openObject(file);
+                updateUIList();
             }
         }
-        File file = new File("SavingTest.txt");
-        
-        try{
-            if(!file.exists()) file.createNewFile();
-        }
         catch(IOException e){}
-        
-        //filehandler.saveObject(awd, file);
-        LinkedList<String> newList = 
-            (LinkedList<String>)filehandler.openObject(file);
-        System.out.println(newList.toString());
+    }
+
+    private void updateUIList() {
+        list.removeAll();
+        for (int i = 0; i < linkedList.size(); i++) {
+            LinkedList<String> subList = linkedList.get(i);
+            String line = "";
+            for (int j = 0; j < subList.size() - 1; j++) {
+                line += subList.get(j) + ", ";
+            }
+            line += subList.get(subList.size() - 1);
+            list.add(line, i);
+        }
     }
     
     private void initUIElements(){
@@ -138,43 +148,53 @@ class UI extends JFrame{
         delete.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
         delete.setText("Delete");
         delete.setFont(font);
-        this.add(delete);
-        delete.setVisible(true);
         delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(list.getSelectedIndex() < ZERO){}
-                else{
-                    deleteIndex();
-                }
+                deleteIndex();
             }
         });
-                
+        this.add(delete);
+        delete.setVisible(true);
         
         //Instantiate button
         enter.setBounds(delete.getX()+delete.getWidth()+SPACER,
             textbox.getY()+textbox.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
         enter.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
         enter.setFont(font);
-        this.add(enter);
         enter.setText("Enter");
-        enter.setVisible(true);
         enter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(list.getSelectedIndex() < ZERO){}
-                else{
-                    deleteIndex();
-                }
+                enter();
             }
         });
+        this.add(enter);
+        enter.setVisible(true);
+        
+        //Instantiate button
+        save.setBounds(SPACER,
+            enter.getY()+enter.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
+        save.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
+        save.setFont(font);
+        save.setText("Save");
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                filehandler.saveObject(linkedList, fileName);
+                System.out.println("done");
+            }
+        });
+        this.add(save);
+        save.setVisible(true);
         
         //Once all is done and set, reveal the interface to the user
         this.setVisible(true);
     }
 
     private void deleteIndex() {
-        list.remove(list.getSelectedIndex());
+        if(list.getSelectedIndex() < 0) {}
+        else list.remove(list.getSelectedIndex());
     }
     
     private void keyPress(KeyEvent e){
@@ -190,9 +210,16 @@ class UI extends JFrame{
     }
 
     private void enter() {
-        String line = list.getItem(ZERO);
-        list.add(textbox.getText() + ", " + line);
-        textbox.setText("");
+        int index = list.getSelectedIndex();
+        if(index < 0 || textbox.getText().equals("")) {}
+        else {
+            linkedList.get(index).add(textbox.getText());
+            updateUIList();
+//            String line = list.getSelectedItem();
+//            list.remove(index);
+//            list.add(textbox.getText() + ", " + line , index);
+//            list.select(index);
+        }
     }
     
     private void resizeToContainer(JLabel label) {
