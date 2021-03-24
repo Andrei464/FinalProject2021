@@ -51,7 +51,7 @@ class UI extends JFrame{
     JButton                         save        = new JButton();
     JButton                         delete      = new JButton();
     JButton                         enter       = new JButton();
-    JButton                         search      = new JButton();
+    JButton                         add         = new JButton();
     Font                            font        = new Font("Helvetica", 20, 20);
     List                            list        = new List();
     Icon                            icon;
@@ -68,6 +68,9 @@ class UI extends JFrame{
             else{
                 linkedList = 
                 (LinkedList<LinkedList<String>>)filehandler.openObject(file);
+                if(linkedList == null){
+                    linkedList = new LinkedList<>();
+                }
                 updateUIList();
             }
         }
@@ -188,8 +191,27 @@ class UI extends JFrame{
         this.add(save);
         save.setVisible(true);
         
+        //Instantiate button
+        add.setBounds(delete.getX()+delete.getWidth()+SPACER,
+            enter.getY()+enter.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
+        add.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
+        add.setFont(font);
+        add.setText("Add Entry");
+        add.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addEntry();
+            }
+        });
+        this.add(add);
+        add.setVisible(true);
+        
         //Once all is done and set, reveal the interface to the user
         this.setVisible(true);
+    }
+    
+    private void addEntry(){
+        
     }
 
     private void deleteIndex() {
@@ -213,12 +235,12 @@ class UI extends JFrame{
         int index = list.getSelectedIndex();
         if(index < 0 || textbox.getText().equals("")) {}
         else {
+            if(linkedList.size() == 0){
+                LinkedList<String> subList = new LinkedList<>();
+                linkedList.add(subList);
+            }
             linkedList.get(index).add(textbox.getText());
             updateUIList();
-//            String line = list.getSelectedItem();
-//            list.remove(index);
-//            list.add(textbox.getText() + ", " + line , index);
-//            list.select(index);
         }
     }
     
@@ -247,13 +269,15 @@ class UI extends JFrame{
 //        System.out.println(widthOffset + ", " + heightOffset);
 //        if(iconHeight > label.getWidth() || iconWidth > label.getHeight()){
 //            System.out.println(newIconWidth + ", " + newIconHeight);
-//            while (newIconHeight > label.getWidth() && newIconWidth > label.getHeight()) {
+//            while (newIconHeight > label.getWidth() &&
+//                    newIconWidth > label.getHeight()) {
 //                newIconHeight -= heightOffset;
 //                newIconWidth  -= widthOffset;
 //                System.out.println(newIconWidth + ", " + newIconHeight);
 //            }
 //            Image oldImage = oldIcon.getImage();
-//            Image newImage = oldImage.getScaledInstance(newIconWidth, newIconHeight, Image.SCALE_SMOOTH);
+//            Image newImage = oldImage.getScaledInstance
+//                (newIconWidth, newIconHeight, Image.SCALE_SMOOTH);
 //            Icon newIcon = new ImageIcon(newImage);
 //            label.setIcon(newIcon);
 //        }
