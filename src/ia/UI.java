@@ -37,7 +37,8 @@ class UI extends JFrame{
     final int                       B_HEIGHT    = 40;    
     final int                       B_WIDTH     = 145;
     
-    final String                    fileName    = "SavingTest.txt";
+    final String                    FILE_NAME   = "SavingTest.txt";
+    final private Color             BLACK       = Color.BLACK;
     
     //Objects 
     LinkedList<LinkedList<String>>  linkedList  = new LinkedList<>();
@@ -46,12 +47,12 @@ class UI extends JFrame{
     //UI Elements
     JTextArea                       textbox     = new JTextArea();
     JLabel                          imagePanel  = new JLabel();
-    JButton                         removeWord  = new JButton();
-    JButton                         addWord     = new JButton();
+    JButton                         addIndex    = new JButton();
     JButton                         save        = new JButton();
-    JButton                         delete      = new JButton();
+    JButton                         deleteIndex = new JButton();
+    JButton                         deleteTag   = new JButton();
     JButton                         enter       = new JButton();
-    JButton                         add         = new JButton();
+    JButton                         load        = new JButton();
     Font                            font        = new Font("Helvetica", 20, 20);
     List                            list        = new List();
     Icon                            icon;
@@ -63,7 +64,7 @@ class UI extends JFrame{
 
     private void createList() {
         try{
-            File file = new File(fileName);
+            File file = new File(FILE_NAME);
             if(!file.exists() || file.length() == 0) file.createNewFile();
             else{
                 linkedList = 
@@ -85,7 +86,7 @@ class UI extends JFrame{
             for (int j = 0; j < subList.size() - 1; j++) {
                 line += subList.get(j) + ", ";
             }
-            line += subList.get(subList.size() - 1);
+            if(!subList.isEmpty()) line += subList.get(subList.size() - 1);
             list.add(line, i);
         }
     }
@@ -103,7 +104,7 @@ class UI extends JFrame{
         imagePanel.setBounds(SPACER, SPACER, 300, 300);
         imagePanel.setOpaque(true);
         imagePanel.setBorder(
-            BorderFactory.createMatteBorder(1,1,1,1,Color.WHITE));
+            BorderFactory.createMatteBorder(1,1,1,1,BLACK));
         this.add(imagePanel);
         imagePanel.setVisible(true);
         icon = new ImageIcon(
@@ -117,7 +118,7 @@ class UI extends JFrame{
             imagePanel.getWidth(), SPACER * FOUR);
 //        textbox.setMargin(m);/////////////////////////////////////////////////
         textbox.setOpaque(true);
-        textbox.setCaretColor(Color.BLACK);
+        textbox.setCaretColor(BLACK);
         textbox.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -146,24 +147,24 @@ class UI extends JFrame{
         list.setVisible(true);
         
         //Instantiate button
-        delete.setBounds(SPACER,
+        deleteIndex.setBounds(SPACER,
             textbox.getY()+textbox.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
-        delete.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
-        delete.setText("Delete");
-        delete.setFont(font);
-        delete.addActionListener(new ActionListener() {
+        deleteIndex.setBorder(BorderFactory.createMatteBorder(1,1,1,1,BLACK));
+        deleteIndex.setText("Delete");
+        deleteIndex.setFont(font);
+        deleteIndex.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 deleteIndex();
             }
         });
-        this.add(delete);
-        delete.setVisible(true);
+        this.add(deleteIndex);
+        deleteIndex.setVisible(true);
         
         //Instantiate button
-        enter.setBounds(delete.getX()+delete.getWidth()+SPACER,
+        enter.setBounds(deleteIndex.getX()+deleteIndex.getWidth()+SPACER,
             textbox.getY()+textbox.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
-        enter.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
+        enter.setBorder(BorderFactory.createMatteBorder(1,1,1,1,BLACK));
         enter.setFont(font);
         enter.setText("Enter");
         enter.addActionListener(new ActionListener() {
@@ -178,45 +179,83 @@ class UI extends JFrame{
         //Instantiate button
         save.setBounds(SPACER,
             enter.getY()+enter.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
-        save.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
+        save.setBorder(BorderFactory.createMatteBorder(1,1,1,1,BLACK));
         save.setFont(font);
         save.setText("Save");
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                filehandler.saveObject(linkedList, fileName);
-                System.out.println("done");
+                filehandler.saveObject(linkedList, FILE_NAME);
             }
         });
         this.add(save);
         save.setVisible(true);
         
         //Instantiate button
-        add.setBounds(delete.getX()+delete.getWidth()+SPACER,
+        load.setBounds(deleteIndex.getX()+deleteIndex.getWidth()+SPACER,
             enter.getY()+enter.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
-        add.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.BLACK));
-        add.setFont(font);
-        add.setText("Add Entry");
-        add.addActionListener(new ActionListener() {
+        load.setBorder(BorderFactory.createMatteBorder(1,1,1,1,BLACK));
+        load.setFont(font);
+        load.setText("Load");
+        load.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                addEntry();
+                loadData();
             }
         });
-        this.add(add);
-        add.setVisible(true);
+        this.add(load);
+        load.setVisible(true);
+        
+        //Instantiate button
+        addIndex.setBounds(deleteIndex.getX()+deleteIndex.getWidth()+SPACER,
+            load.getY()+load.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
+        addIndex.setBorder
+            (BorderFactory.createMatteBorder(1,1,1,1,BLACK));
+        addIndex.setFont(font);
+        addIndex.setText("Add Index");
+        addIndex.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addIndex();
+            }
+        });
+        this.add(addIndex);
+        addIndex.setVisible(true);
+        
+        //Instantiate button
+        deleteTag.setBounds(SPACER,
+            save.getY()+save.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
+        deleteTag.setBorder(BorderFactory.createMatteBorder(1,1,1,1,BLACK));
+        deleteTag.setFont(font);
+        deleteTag.setText("Delete Tag");
+        deleteTag.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteTag();
+            }
+        });
+        this.add(deleteTag);
+        deleteTag.setVisible(true);
         
         //Once all is done and set, reveal the interface to the user
         this.setVisible(true);
     }
     
-    private void addEntry(){
+    private void loadData(){
         
     }
 
     private void deleteIndex() {
         if(list.getSelectedIndex() < 0) {}
         else list.remove(list.getSelectedIndex());
+    }
+    
+    private void deleteTag() {
+        if(list.getSelectedIndex() < 0) {}
+        else {
+            linkedList.get(list.getSelectedIndex()).removeLast();
+            updateUIList();
+        }
     }
     
     private void keyPress(KeyEvent e){
@@ -226,22 +265,29 @@ class UI extends JFrame{
                 enter();
             }
         }
+        else if (e.getKeyCode() == KeyEvent.VK_DELETE){
+            deleteIndex();
+        }
         else{
-            System.out.println(textbox.getText());
+//            System.out.println(textbox.getText());
         }
     }
 
     private void enter() {
+        if(linkedList.isEmpty()) addIndex();
         int index = list.getSelectedIndex();
-        if(index < 0 || textbox.getText().equals("")) {}
-        else {
-            if(linkedList.size() == 0){
-                LinkedList<String> subList = new LinkedList<>();
-                linkedList.add(subList);
-            }
-            linkedList.get(index).add(textbox.getText());
-            updateUIList();
-        }
+        if(index < 0 || textbox.getText().equals("")) return;
+        if(linkedList.isEmpty()) addIndex();
+        System.out.println(linkedList.size());
+        linkedList.get(index).add(textbox.getText());
+        updateUIList();
+    }
+
+    private void addIndex() {
+        LinkedList<String> subList = new LinkedList<>();
+        subList.add(" ");
+        linkedList.add(subList);
+        updateUIList();
     }
     
     private void resizeToContainer(JLabel label) {
