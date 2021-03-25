@@ -17,8 +17,10 @@ import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 /**
 * UI.java - 
@@ -242,16 +244,29 @@ class UI extends JFrame{
     }
     
     private void loadData(){
-        
+        String line = "";
+        String title = "";
+        while(line == null || line.equals("")){
+            if(line == null){
+                return;
+            }
+            line = JOptionPane.showInputDialog
+                (null,
+                "Enter the URL or the Directory of the Image You Want to Save",
+                title,
+                JOptionPane.INFORMATION_MESSAGE);
+            title = "Enter a Valid URL or Directory";
+        }
+        System.out.println(line);
     }
 
     private void deleteIndex() {
-        if(list.getSelectedIndex() < 0) {}
+        if(list.getSelectedIndex() < 0) return;
         else list.remove(list.getSelectedIndex());
     }
     
     private void deleteTag() {
-        if(list.getSelectedIndex() < 0) {}
+        if(list.getSelectedIndex() < 0) return;
         else {
             linkedList.get(list.getSelectedIndex()).removeLast();
             updateUIList();
@@ -260,7 +275,7 @@ class UI extends JFrame{
     
     private void keyPress(KeyEvent e){
         if(e.getKeyCode() == KeyEvent.VK_ENTER){
-            if(textbox.getText().equals("")|| imagePanel.getIcon() != null){}
+            if(textbox.getText().equals("")|| imagePanel.getIcon() != null) {}
             else{
                 enter();
             }
@@ -298,8 +313,8 @@ class UI extends JFrame{
         Image     originalImage = originalIcon.getImage();      // get image
         Image     newImage      = originalImage.getScaledInstance(
             width,height,Image.SCALE_SMOOTH);
-        Icon icon               = new ImageIcon(newImage);  // set new image
-        label.setIcon(icon);                            // set icon to label
+        Icon newIcon               = new ImageIcon(newImage);  // set new image
+        label.setIcon(newIcon);                            // set icon to label
     }
     
 //    public void resizeToMaxRatio(JLabel label){
