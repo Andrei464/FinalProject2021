@@ -261,13 +261,13 @@ class UI extends JFrame{
     }
 
     private void deleteIndex() {
-        if(list.getSelectedIndex() < 0) return;
+        if(list.getSelectedIndex() < 0) {} 
         else list.remove(list.getSelectedIndex());
     }
     
     private void deleteTag() {
-        if(list.getSelectedIndex() < 0) return;
-        else {
+        if(list.getSelectedIndex() < 0) {
+        } else {
             linkedList.get(list.getSelectedIndex()).removeLast();
             updateUIList();
         }
