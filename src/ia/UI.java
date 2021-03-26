@@ -46,7 +46,7 @@ class UI extends JFrame{
     String                          activeFile  = DEF_FILE;
     
     //Objects 
-    LinkedList<LinkedList<String>>  linkedList  = new LinkedList<>();
+    LinkedList<Data>  linkedList  = new LinkedList<>();
     FileHandler                     filehandler = new FileHandler();
     
     //UI Elements
@@ -73,7 +73,7 @@ class UI extends JFrame{
             if(!file.exists() || file.length() == 0) file.createNewFile();
             else{
                 linkedList = 
-                (LinkedList<LinkedList<String>>)filehandler.openObject(file);
+                (LinkedList<Data>)filehandler.openObject(file);
                 if(linkedList == null){
                     linkedList = new LinkedList<>();
                 }
@@ -86,12 +86,12 @@ class UI extends JFrame{
     private void updateUIList() {
         list.removeAll();
         for (int i = 0; i < linkedList.size(); i++) {
-            LinkedList<String> subList = linkedList.get(i);
+            Data data = linkedList.get(i);
             String line = "";
-            for (int j = 0; j < subList.size() - 1; j++) {
-                line += subList.get(j) + ", ";
+            for (int j = 0; j < data.tags.size()-1; j++) {
+                line += data.tags.get(j) + ", ";
             }
-            if(!subList.isEmpty()) line += subList.get(subList.size() - 1);
+            if(!data.tags.isEmpty()) line += data.tags.get(data.tags.size()-1);
             list.add(line, i);
         }
     }
@@ -190,7 +190,6 @@ class UI extends JFrame{
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("1");
                 save();
             }
         });
@@ -282,7 +281,7 @@ class UI extends JFrame{
     private void deleteTag() {
         if(list.getSelectedIndex() < 0) {
         } else {
-            linkedList.get(list.getSelectedIndex()).removeLast();
+            linkedList.get(list.getSelectedIndex()).tags.removeLast();
             updateUIList();
         }
     }
@@ -308,14 +307,16 @@ class UI extends JFrame{
         if(index < 0 || textbox.getText().equals("")) return;
         if(linkedList.isEmpty()) addIndex();
         System.out.println(linkedList.size());
-        linkedList.get(index).add(textbox.getText());
+        linkedList.get(index).tags.add(textbox.getText());
         updateUIList();
     }
 
     private void addIndex() {
+        Data data = new Data();
         LinkedList<String> subList = new LinkedList<>();
+        data.tags = subList;
         subList.add(" ");
-        linkedList.add(subList);
+        linkedList.add(data);
         updateUIList();
     }
     

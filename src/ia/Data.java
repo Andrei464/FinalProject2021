@@ -12,10 +12,10 @@ import javax.swing.ImageIcon;
 */
 public class Data implements Serializable{
 
-    String name;
-    String url;
-    LinkedList<String> tags;
-    ImageIcon image;
+    public String name;
+    public String url;
+    public LinkedList<String> tags;
+    public ImageIcon image;
     
     public Data(String name, String url, ImageIcon image){
         this.name = name;
@@ -29,6 +29,9 @@ public class Data implements Serializable{
     
     public Data(String name){
         this(name,null,null);
+    }
+    public Data(){
+        this(null, null, null);
     }
     
     public String toString(){
