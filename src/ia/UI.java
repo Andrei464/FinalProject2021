@@ -46,7 +46,7 @@ class UI extends JFrame{
     String                          activeFile  = DEF_FILE;
     
     //Objects 
-    LinkedList<Data>  linkedList  = new LinkedList<>();
+    LinkedList<Data>                linkedList  = new LinkedList<>();
     FileHandler                     filehandler = new FileHandler();
     
     //UI Elements
@@ -86,6 +86,7 @@ class UI extends JFrame{
     private void updateUIList() {
         list.removeAll();
         for (int i = 0; i < linkedList.size(); i++) {
+            System.out.println(linkedList.get(i) + " 1");
             Data data = linkedList.get(i);
             String line = "";
             for (int j = 0; j < data.tags.size()-1; j++) {
@@ -247,7 +248,6 @@ class UI extends JFrame{
     }
 
     private void save() {
-        System.out.println(activeFile);
         filehandler.saveObject(linkedList, activeFile);
         JOptionPane.showMessageDialog(null, "Data Saved Successfully");
     }
@@ -306,7 +306,6 @@ class UI extends JFrame{
         int index = list.getSelectedIndex();
         if(index < 0 || textbox.getText().equals("")) return;
         if(linkedList.isEmpty()) addIndex();
-        System.out.println(linkedList.size());
         linkedList.get(index).tags.add(textbox.getText());
         updateUIList();
     }
