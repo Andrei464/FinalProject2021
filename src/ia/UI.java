@@ -39,8 +39,11 @@ class UI extends JFrame{
     final int                       B_HEIGHT    = 40;    
     final int                       B_WIDTH     = 145;
     
-    final String                    FILE_NAME   = "SavingTest.txt";
+    final String                    DEF_FILE    = "SavingTest.txt";
     final private Color             BLACK       = Color.BLACK;
+    
+    //Non-Constant Variables
+    String                          activeFile  = DEF_FILE;
     
     //Objects 
     LinkedList<LinkedList<String>>  linkedList  = new LinkedList<>();
@@ -66,7 +69,7 @@ class UI extends JFrame{
 
     private void createList() {
         try{
-            File file = new File(FILE_NAME);
+            File file = new File(activeFile);
             if(!file.exists() || file.length() == 0) file.createNewFile();
             else{
                 linkedList = 
@@ -117,7 +120,7 @@ class UI extends JFrame{
         //Instantiate the text box
         textbox.setBounds(SPACER,
             imagePanel.getY() + imagePanel.getHeight() + SPACER,
-            imagePanel.getWidth(), SPACER * FOUR);
+            imagePanel.getWidth(), SPACER * TWO);
 //        textbox.setMargin(m);/////////////////////////////////////////////////
         textbox.setOpaque(true);
         textbox.setCaretColor(BLACK);
@@ -187,7 +190,8 @@ class UI extends JFrame{
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                filehandler.saveObject(linkedList, FILE_NAME);
+                System.out.println("1");
+                save();
             }
         });
         this.add(save);
@@ -242,6 +246,12 @@ class UI extends JFrame{
         //Once all is done and set, reveal the interface to the user
         this.setVisible(true);
     }
+
+    private void save() {
+        System.out.println(activeFile);
+        filehandler.saveObject(linkedList, activeFile);
+        JOptionPane.showMessageDialog(null, "Data Saved Successfully");
+    }
     
     private void loadData(){
         String line = "";
@@ -257,12 +267,16 @@ class UI extends JFrame{
                 JOptionPane.INFORMATION_MESSAGE);
             title = "Enter a Valid URL or Directory";
         }
-        System.out.println(line);
+        activeFile = line;
+        createList();
     }
 
     private void deleteIndex() {
         if(list.getSelectedIndex() < 0) {} 
-        else list.remove(list.getSelectedIndex());
+        else { 
+            linkedList.remove(list.getSelectedIndex());
+            updateUIList();
+        }
     }
     
     private void deleteTag() {

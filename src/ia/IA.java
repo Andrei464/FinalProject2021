@@ -1,6 +1,3 @@
-//awkdawidjwa
-
-//alwkdawiodawdjaiowd
 package ia;
 
 /**
