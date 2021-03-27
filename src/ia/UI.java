@@ -3,7 +3,6 @@ package ia;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,7 +16,6 @@ import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -86,7 +84,8 @@ class UI extends JFrame{
     private void updateUIList() {
         list.removeAll();
         for (int i = 0; i < linkedList.size(); i++) {
-            Data data = linkedList.get(i);
+            Data data = new Data();
+            data.tags = linkedList.get(i).tags;
             String line = "";
             for (int j = 0; j < data.tags.size()-1; j++) {
                 line += data.tags.get(j) + ", ";
@@ -121,7 +120,6 @@ class UI extends JFrame{
         textbox.setBounds(SPACER,
             imagePanel.getY() + imagePanel.getHeight() + SPACER,
             imagePanel.getWidth(), SPACER * TWO);
-//        textbox.setMargin(m);/////////////////////////////////////////////////
         textbox.setOpaque(true);
         textbox.setCaretColor(BLACK);
         textbox.addKeyListener(new KeyListener() {
