@@ -29,36 +29,37 @@ import javax.swing.JTextArea;
 class UI extends JFrame{
 
     //Constant Variables
-    final int                       ZERO        = 0;
-    final int                       TWO         = 2;
-    final int                       FOUR        = 4;
-    final int                       MARGIN      = 5;
-    final int                       SPACER      = 10;
-    final int                       B_HEIGHT    = 40;    
-    final int                       B_WIDTH     = 145;
+    final private int               ZERO        = 0;
+    final private int               ONE         = 1;
+    final private int               TWO         = 2;
+    final private int               FOUR        = 4;
+    final private int               MARGIN      = 5;
+    final private int               SPACER      = 10;
+    final private int               B_HEIGHT    = 40;    
+    final private int               B_WIDTH     = 145;
     
-    final String                    DEF_FILE    = "SavingTest.txt";
+    final private String            DEF_FILE    = "SavingTest.txt";
     final private Color             BLACK       = Color.BLACK;
     
     //Non-Constant Variables
-    String                          activeFile  = DEF_FILE;
+    private String                  activeFile  = DEF_FILE;
     
     //Objects 
-    LinkedList<Data>  linkedList  = new LinkedList<>();
-    FileHandler                     filehandler = new FileHandler();
+    private LinkedList<Data>        linkedList  = new LinkedList<>();
+    private FileHandler             filehandler = new FileHandler();
     
     //UI Elements
-    JTextArea                       textbox     = new JTextArea();
-    JLabel                          imagePanel  = new JLabel();
-    JButton                         addIndex    = new JButton();
-    JButton                         save        = new JButton();
-    JButton                         deleteIndex = new JButton();
-    JButton                         deleteTag   = new JButton();
-    JButton                         enter       = new JButton();
-    JButton                         load        = new JButton();
-    Font                            font        = new Font("Helvetica", 20, 20);
-    List                            list        = new List();
-    Icon                            icon;
+    private JTextArea               textbox     = new JTextArea();
+    private JLabel                  imagePanel  = new JLabel();
+    private JButton                 addIndex    = new JButton();
+    private JButton                 save        = new JButton();
+    private JButton                 deleteIndex = new JButton();
+    private JButton                 deleteTag   = new JButton();
+    private JButton                 enter       = new JButton();
+    private JButton                 load        = new JButton();
+    private Font                    font        = new Font("Helvetica", 20, 20);
+    private List                    list        = new List();
+    private Icon                    icon;
     
     public UI(){
         initUIElements();
@@ -70,8 +71,14 @@ class UI extends JFrame{
             File file = new File(activeFile);
             if(!file.exists() || file.length() == 0) file.createNewFile();
             else{
-                linkedList = 
-                (LinkedList<Data>)filehandler.openObject(file);
+                try{
+                    linkedList = 
+                    (LinkedList<Data>)filehandler.openObject(file);
+                }
+                catch(ClassCastException e){
+                    file.delete();
+                    return;
+                }
                 if(linkedList == null){
                     linkedList = new LinkedList<>();
                 }
@@ -84,8 +91,7 @@ class UI extends JFrame{
     private void updateUIList() {
         list.removeAll();
         for (int i = 0; i < linkedList.size(); i++) {
-            Data data = new Data();
-            data.tags = linkedList.get(i).tags;
+            Data data = (Data)linkedList.get(i);
             String line = "";
             for (int j = 0; j < data.tags.size()-1; j++) {
                 line += data.tags.get(j) + ", ";
@@ -245,7 +251,6 @@ class UI extends JFrame{
     }
 
     private void save() {
-        System.out.println(activeFile);
         filehandler.saveObject(linkedList, activeFile);
         JOptionPane.showMessageDialog(null, "Data Saved Successfully");
     }
@@ -304,7 +309,6 @@ class UI extends JFrame{
         int index = list.getSelectedIndex();
         if(index < 0 || textbox.getText().equals("")) return;
         if(linkedList.isEmpty()) addIndex();
-        System.out.println(linkedList.size());
         linkedList.get(index).tags.add(textbox.getText());
         updateUIList();
     }

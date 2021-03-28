@@ -12,33 +12,27 @@ import javax.swing.ImageIcon;
 */
 public class Data implements Serializable{
 
-    public String name;
-    public String url;
+    public String adress;
     public LinkedList<String> tags;
     public ImageIcon image;
     
-    public Data(String name, String url, ImageIcon image){
-        this.name = name;
-        this.url = url;
+    public Data(String url, ImageIcon image){
+        this.adress = url;
         this.image = image;
     }
     
-    public Data(String name, String url){
-        this(name,url,null);
+    public Data(String url){
+        this(url,null);
     }
     
-    public Data(String name){
-        this(name,null,null);
-    }
     public Data(){
-        this(null, null, null);
+        this(null,null);
     }
     
+    @Override
     public String toString(){
-        String data = "|" + name + "|" + url + "|";
-        for (String tag : tags) {
-            data += tag + "|";
-        }
+        String data = "|" + adress + "|";
+        for (String tag : tags) data += tag + "|";
         return data;
     }
 }
