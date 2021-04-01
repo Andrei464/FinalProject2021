@@ -67,7 +67,7 @@ class UI extends JFrame{
     private JButton                 load            = new JButton();
     private JButton                 deleteIndex     = new JButton();
     private JButton                 deleteTag       = new JButton();
-    private JButton                 enter           = new JButton();
+    private JButton                 enterTag           = new JButton();
     private JButton                 search          = new JButton();
     private JButton                 addImage        = new JButton();            
     private Font                    font            = new Font("", 20, 20);
@@ -82,18 +82,12 @@ class UI extends JFrame{
     private void createList() {
         try{
             File file = new File(activeFile);
-            if(!file.exists() || file.length() == 0){
-                file.createNewFile();
-            }
+            if(!file.exists() || file.length() == ZERO) file.createNewFile();
             else{
-                    linkedList = 
-                    (LinkedList<Data>)filehandler.openObject(file);
-                if(linkedList == null){
-                    linkedList = new LinkedList<>();
-                }
-                else if(linkedList.size() == 0){
-                    addIndex();
-                }
+                linkedList = 
+                (LinkedList<Data>)filehandler.openObject(file);
+                if(linkedList == null) linkedList = new LinkedList<>();
+                else if(linkedList.isEmpty()) addIndex();
                 updateUIList();
             }
         }
@@ -102,11 +96,11 @@ class UI extends JFrame{
 
     private void updateUIList() {
         list.removeAll();
-        for (int i = 0; i < linkedList.size(); i++) {
+        for (int i = ZERO; i < linkedList.size(); i++) {
             Data data = linkedList.get(i);
             list.add(data.toString(), i);
         }  
-        for (int i = 0; i < searchedList.size(); i++) {
+        for (int i = ZERO; i < searchedList.size(); i++) {
             Data data = searchedList.get(i);
             list.add(data.toString(), i);
         }
@@ -153,7 +147,7 @@ class UI extends JFrame{
 
             @Override
             public void keyReleased(KeyEvent e) {
-                keyPress(e);
+                //keyPress(e);
             }
         });
         this.add(textbox);
@@ -189,41 +183,56 @@ class UI extends JFrame{
         this.add(list);
         list.setVisible(true);
         
-        //Instantiate button
-        deleteIndex.setBounds(SPACER,
+//        //Instantiate button
+//        deleteIndex.setBounds(SPACER,
+//            textbox.getY()+textbox.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
+//        deleteIndex.setBorder
+//            (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
+//        deleteIndex.setText("Delete Index");
+//        deleteIndex.setFont(font);
+//        deleteIndex.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                deleteIndex();
+//            }
+//        });
+//        this.add(deleteIndex);
+//        deleteIndex.setVisible(true);
+//Instantiate button
+        deleteTag.setBounds(SPACER,
             textbox.getY()+textbox.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
-        deleteIndex.setBorder
+        deleteTag.setBorder
             (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
-        deleteIndex.setText("Delete");
-        deleteIndex.setFont(font);
-        deleteIndex.addActionListener(new ActionListener() {
+        deleteTag.setText("Delete Tag");
+        deleteTag.setFont(font);
+        deleteTag.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                deleteIndex();
+                deleteTag();
             }
         });
-        this.add(deleteIndex);
-        deleteIndex.setVisible(true);
+        this.add(deleteTag);
+        deleteTag.setVisible(true);
         
         //Instantiate button
-        enter.setBounds(deleteIndex.getX()+deleteIndex.getWidth()+SPACER,
+        enterTag.setBounds(deleteTag.getX()+deleteTag.getWidth()+SPACER,
             textbox.getY()+textbox.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
-        enter.setBorder
+        enterTag.setBorder
             (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
-        enter.setFont(font);
-        enter.setText("Enter");
-        enter.addActionListener(new ActionListener() {
+        enterTag.setFont(font);
+        enterTag.setText("Enter Tag");
+        enterTag.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 enterTag();
             }
         });
-        this.add(enter);
-        enter.setVisible(true);
+        this.add(enterTag);
+        enterTag.setVisible(true);
         
         //Instantiate button
         save.setBounds(SPACER,
-            enter.getY()+enter.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
+            enterTag.getY()+enterTag.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
         save.setBorder
             (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
         save.setFont(font);
@@ -238,8 +247,8 @@ class UI extends JFrame{
         save.setVisible(true);
         
         //Instantiate button
-        load.setBounds(deleteIndex.getX()+deleteIndex.getWidth()+SPACER,
-            enter.getY()+enter.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
+        load.setBounds(deleteTag.getX()+deleteTag.getWidth()+SPACER,
+            enterTag.getY()+enterTag.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
         load.setBorder
             (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
         load.setFont(font);
@@ -254,7 +263,7 @@ class UI extends JFrame{
         load.setVisible(true);
         
         //Instantiate button
-        addIndex.setBounds(deleteIndex.getX()+deleteIndex.getWidth()+SPACER,
+        addIndex.setBounds(deleteTag.getX()+deleteTag.getWidth()+SPACER,
             load.getY()+load.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
         addIndex.setBorder
             (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
@@ -270,24 +279,24 @@ class UI extends JFrame{
         addIndex.setVisible(true);
         
         //Instantiate button
-        deleteTag.setBounds(SPACER,
+        deleteIndex.setBounds(SPACER,
             save.getY()+save.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
-        deleteTag.setBorder
+        deleteIndex.setBorder
             (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
-        deleteTag.setFont(font);
-        deleteTag.setText("Delete Tag");
-        deleteTag.addActionListener(new ActionListener() {
+        deleteIndex.setFont(font);
+        deleteIndex.setText("Delete Index");
+        deleteIndex.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                deleteTag();
+                deleteIndex();
             }
         });
-        this.add(deleteTag);
-        deleteTag.setVisible(true);
+        this.add(deleteIndex);
+        deleteIndex.setVisible(true);
         
         //Instantiate button
         search.setBounds(SPACER,
-            deleteTag.getY()+deleteTag.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
+            deleteIndex.getY()+deleteIndex.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
         search.setBorder
             (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
         search.setFont(font);
@@ -323,7 +332,7 @@ class UI extends JFrame{
 
     private void updateImage() {
         int index = list.getSelectedIndex();
-        if(index < 0)return;
+        if(index < ZERO)return;
         imagePanel.setIcon(linkedList.get(list.getSelectedIndex()).image);
         resizeToContainer(imagePanel);
     }
@@ -360,7 +369,7 @@ class UI extends JFrame{
     private void search(){
         if(searchedList.isEmpty()){}
         else{
-            for (int i = 0; i < searchedList.size(); i++) {
+            for (int i = ZERO; i < searchedList.size(); i++) {
                 linkedList.addFirst(searchedList.get(i));
             }
             searchedList.remove();
@@ -368,9 +377,9 @@ class UI extends JFrame{
         
         String tag = input(ENTR_TAG_MSG, ENTR_VLD_TAG);
         
-        for (int i = 0; i < linkedList.size(); i++) {
+        for (int i = ZERO; i < linkedList.size(); i++) {
             boolean isMatching = false;
-            for (int j = 0; j < linkedList.get(i).tags.size(); j++) {
+            for (int j = ZERO; j < linkedList.get(i).tags.size(); j++) {
                 if(tag.equals(linkedList.get(i).tags.get(j))){
                     isMatching = true;
                 }
@@ -395,7 +404,7 @@ class UI extends JFrame{
     }
     
     private void deleteIndex() {
-        if(list.getSelectedIndex() < 0) {} 
+        if(list.getSelectedIndex() < ZERO) {} 
         else { 
             linkedList.remove(list.getSelectedIndex());
             imagePanel.setIcon(null);
@@ -404,9 +413,16 @@ class UI extends JFrame{
     }
     
     private void deleteTag() {
-        if(list.getSelectedIndex() < 0) {
+        if(list.getSelectedIndex() < ZERO) {
         } else {
-            linkedList.get(list.getSelectedIndex()).tags.removeLast();
+            if(linkedList.get(list.getSelectedIndex()).tags.isEmpty()){
+                linkedList.get(list.getSelectedIndex()).adress = "";
+                linkedList.get(list.getSelectedIndex()).image = null;
+                imagePanel.setIcon(null);
+            }
+            else{
+                linkedList.get(list.getSelectedIndex()).tags.removeLast();
+            }
             updateUIList();
         }
     }
@@ -431,8 +447,9 @@ class UI extends JFrame{
             index = list.getSelectedIndex() + ONE;
         }
         index = list.getSelectedIndex();
-        if(index < 0 || textbox.getText().equals("")) return;
+        if(index < ZERO || textbox.getText().equals("")) return;
         linkedList.get(index).tags.add(textbox.getText());
+        textbox.setText("");
         updateUIList();
     }
 

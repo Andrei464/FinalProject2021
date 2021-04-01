@@ -37,17 +37,20 @@ public class Data implements Serializable{
     @Override
     public String toString(){
         String data = "";
-        for (int i = 0; i < tags.size() - 1; i++) {
-            data += tags.get(i) + ", ";
-        }
-        
-        if(adress == null || adress.equals("")){
-            if(tags.isEmpty()){}
-            else data += tags.getLast() ;
+        if(!tags.isEmpty()){
+            for (int i = 0; i < tags.size() - 1; i++) {
+                data += tags.get(i) + ", ";
+            }
+            if(adress == null || adress.equals("")){
+                data += tags.getLast() ;
+            }
+            else{
+                data += tags.getLast() + ", Directory: " + adress;
+            }
         }
         else{
-            if(tags.isEmpty()){}
-            else data += tags.getLast() + ", Directory: " + adress;
+            if(adress == null) data = " ";
+            else data = "Directory: " + adress;
         }
         return data;
     }
