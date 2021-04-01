@@ -42,10 +42,12 @@ public class Data implements Serializable{
         }
         
         if(adress == null || adress.equals("")){
-            data += tags.getLast() ;
+            if(tags.isEmpty()){}
+            else data += tags.getLast() ;
         }
         else{
-            data += tags.getLast() + ", Directory: " + adress;
+            if(tags.isEmpty()){}
+            else data += tags.getLast() + ", Directory: " + adress;
         }
         return data;
     }
