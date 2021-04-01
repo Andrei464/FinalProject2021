@@ -1,7 +1,7 @@
 package ia;
 
 import java.io.Serializable;
-import java.util.LinkedList;
+import collections.LinkedList;
 import javax.swing.ImageIcon;
 
 /**
@@ -42,10 +42,10 @@ public class Data implements Serializable{
                 data += tags.get(i) + ", ";
             }
             if(adress == null || adress.equals("")){
-                data += tags.getLast() ;
+                data += tags.back() ;
             }
             else{
-                data += tags.getLast() + ", Directory: " + adress;
+                data += tags.back() + ", Directory: " + adress;
             }
         }
         else{

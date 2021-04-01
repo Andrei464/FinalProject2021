@@ -12,8 +12,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedList;
-//import collections.LinkedList;
+//import java.util.LinkedList;
+import collections.LinkedList;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -37,6 +37,7 @@ class UI extends JFrame{
     final private int               FOUR            = 4;
     final private int               MARGIN          = 5;
     final private int               SPACER          = 10;
+    final private int               FONT_SIZE       = 20;
     final private int               B_HEIGHT        = 40;    
     final private int               B_WIDTH         = 145;
     
@@ -77,6 +78,8 @@ class UI extends JFrame{
     public UI(){
         initUIElements();
         createList();
+        //Once all is done and set, reveal the interface to the user
+        this.setVisible(true);
     }
 
     private void createList() {
@@ -100,15 +103,15 @@ class UI extends JFrame{
             Data data = linkedList.get(i);
             list.add(data.toString(), i);
         }  
-        for (int i = ZERO; i < searchedList.size(); i++) {
-            Data data = searchedList.get(i);
-            list.add(data.toString(), i);
-        }
+//        for (int i = ZERO; i < searchedList.size(); i++) {
+//            Data data = searchedList.get(i);
+//            list.add(data.toString(), i);
+//        }
     }
     
     private void initUIElements(){
         //Instantiate the JFrame
-        this.setSize(1000, 700);
+        this.setSize(1000, 585);
         this.setLocationRelativeTo(null);
         this.setTitle("Photo Database");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -122,9 +125,6 @@ class UI extends JFrame{
             BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
         this.add(imagePanel);
         imagePanel.setVisible(true);
-        //icon = new ImageIcon("C:\\Users\\aasho\\Desktop\\Maid Outfit.png");
-        //C:\Users\aasho\Desktop\Maid Outfit.png
-        //C:\Users\A.sholokhov\Desktop\Maid Outfit.png
         imagePanel.setIcon(icon);
         resizeToContainer(imagePanel);
         
@@ -156,7 +156,7 @@ class UI extends JFrame{
         //Instantiate list
         list.setBounds(imagePanel.getX() + imagePanel.getWidth() + SPACER,
             SPACER, this.getWidth() - imagePanel.getWidth() - (SPACER * FOUR)
-            - MARGIN, 525);
+            - MARGIN, 530);
         list.add("",ZERO);
         list.addMouseListener(new MouseListener() {
             @Override
@@ -183,22 +183,7 @@ class UI extends JFrame{
         this.add(list);
         list.setVisible(true);
         
-//        //Instantiate button
-//        deleteIndex.setBounds(SPACER,
-//            textbox.getY()+textbox.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
-//        deleteIndex.setBorder
-//            (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
-//        deleteIndex.setText("Delete Index");
-//        deleteIndex.setFont(font);
-//        deleteIndex.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                deleteIndex();
-//            }
-//        });
-//        this.add(deleteIndex);
-//        deleteIndex.setVisible(true);
-//Instantiate button
+        //Instantiate button
         deleteTag.setBounds(SPACER,
             textbox.getY()+textbox.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
         deleteTag.setBorder
@@ -295,8 +280,8 @@ class UI extends JFrame{
         deleteIndex.setVisible(true);
         
         //Instantiate button
-        search.setBounds(SPACER,
-            deleteIndex.getY()+deleteIndex.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
+        search.setBounds(SPACER, deleteIndex.getY()+deleteIndex.getHeight() +
+            SPACER, B_WIDTH, B_HEIGHT);
         search.setBorder
             (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
         search.setFont(font);
@@ -325,21 +310,19 @@ class UI extends JFrame{
         });
         this.add(addImage);
         addImage.setVisible(true);
-        
-        //Once all is done and set, reveal the interface to the user
-        this.setVisible(true);
     }
 
     private void updateImage() {
         int index = list.getSelectedIndex();
-        if(index < ZERO)return;
+        if(index < ZERO) return;
+        if(linkedList.size() < index)
         imagePanel.setIcon(linkedList.get(list.getSelectedIndex()).image);
         resizeToContainer(imagePanel);
     }
     
     private void addImage(){
         int index = list.getSelectedIndex();
-        if(index < 0 ) return;
+        if(index < 0 || linkedList.get(index).adress != null) return;
         String directory = input(ENTR_FILE_MSG, ENTR_VLD_FILE_MSG);
         linkedList.get(index).adress = directory;
         ImageIcon image = new ImageIcon(directory);
@@ -367,16 +350,7 @@ class UI extends JFrame{
     }
     
     private void search(){
-        if(searchedList.isEmpty()){}
-        else{
-            for (int i = ZERO; i < searchedList.size(); i++) {
-                linkedList.addFirst(searchedList.get(i));
-            }
-            searchedList.remove();
-        }
-        
         String tag = input(ENTR_TAG_MSG, ENTR_VLD_TAG);
-        
         for (int i = ZERO; i < linkedList.size(); i++) {
             boolean isMatching = false;
             for (int j = ZERO; j < linkedList.get(i).tags.size(); j++) {
@@ -386,8 +360,9 @@ class UI extends JFrame{
             }
             if(isMatching) searchedList.add(linkedList.get(i));
         }
-        for (Data data : searchedList) {
-            linkedList.remove(data);
+        for (int i = 0; i < searchedList.size(); i++) {
+            linkedList.remove(searchedList.get(i));
+            linkedList.addFront(searchedList.get(i));
         }
         updateUIList();
     }
@@ -415,13 +390,14 @@ class UI extends JFrame{
     private void deleteTag() {
         if(list.getSelectedIndex() < ZERO) {
         } else {
-            if(linkedList.get(list.getSelectedIndex()).tags.isEmpty()){
+            if(
+                linkedList.get(list.getSelectedIndex()).tags.isEmpty()){
                 linkedList.get(list.getSelectedIndex()).adress = "";
                 linkedList.get(list.getSelectedIndex()).image = null;
                 imagePanel.setIcon(null);
             }
             else{
-                linkedList.get(list.getSelectedIndex()).tags.removeLast();
+                linkedList.get(list.getSelectedIndex()).tags.removeBack();
             }
             updateUIList();
         }
