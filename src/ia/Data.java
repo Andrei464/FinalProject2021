@@ -29,7 +29,7 @@ public class Data implements Serializable{
         this(null,null);
     }
     
-    public boolean isEmpty(){
+    private boolean isEmpty(){
         if(tags.isEmpty() && (adress.equals("") || adress == null)) return true;
         else return false;
     }
@@ -49,7 +49,7 @@ public class Data implements Serializable{
             }
         }
         else{
-            if(adress == null) data = " ";
+            if(adress == null || adress.equals("")) data = " ";
             else data = "Directory: " + adress;
         }
         return data;

@@ -42,13 +42,15 @@ class UI extends JFrame{
     final private int               B_WIDTH         = 145;
     
     final private String            DEF_FILE        = "SavingTest.txt";
-    final private String            ENTR_FILE_MSG       = 
+    final private String            FILE_MSG        = 
+        "Enter the Directory of the Database File";
+    final private String            IMAGE_MSG       = 
         "Enter a URL or the Directory of the Image";
-    final private String            ENTR_TAG_MSG        = 
+    final private String            TAG_MSG         = 
         "Enter the Tag You Want to Search by";
-    final private String            ENTR_VLD_FILE_MSG   = 
+    final private String            VALID_FILE_MSG  = 
         "Enter a Valid URL or Directory";
-    final private String            ENTR_VLD_TAG        = 
+    final private String            VALID_TAG_MSG   = 
         "Enter a Valid Tag";
     final private Color             BLACK           = Color.BLACK;
     
@@ -68,16 +70,18 @@ class UI extends JFrame{
     private JButton                 load            = new JButton();
     private JButton                 deleteIndex     = new JButton();
     private JButton                 deleteTag       = new JButton();
-    private JButton                 enterTag           = new JButton();
+    private JButton                 enterTag        = new JButton();
     private JButton                 search          = new JButton();
     private JButton                 addImage        = new JButton();            
-    private Font                    font            = new Font("", 20, 20);
+    private Font                    font            = 
+        new Font("", FONT_SIZE, FONT_SIZE);
     private List                    list            = new List();
     private Icon                    icon;
     
     public UI(){
         initUIElements();
         createList();
+        
         //Once all is done and set, reveal the interface to the user
         this.setVisible(true);
     }
@@ -103,10 +107,6 @@ class UI extends JFrame{
             Data data = linkedList.get(i);
             list.add(data.toString(), i);
         }  
-//        for (int i = ZERO; i < searchedList.size(); i++) {
-//            Data data = searchedList.get(i);
-//            list.add(data.toString(), i);
-//        }
     }
     
     private void initUIElements(){
@@ -314,16 +314,17 @@ class UI extends JFrame{
 
     private void updateImage() {
         int index = list.getSelectedIndex();
-        if(index < ZERO) return;
-        if(linkedList.size() < index)
+        if(index < ZERO || linkedList.size() < index) return;
         imagePanel.setIcon(linkedList.get(list.getSelectedIndex()).image);
         resizeToContainer(imagePanel);
+//        this.revalidate();
+//        this.repaint();
     }
     
     private void addImage(){
         int index = list.getSelectedIndex();
         if(index < 0 || linkedList.get(index).adress != null) return;
-        String directory = input(ENTR_FILE_MSG, ENTR_VLD_FILE_MSG);
+        String directory = input(IMAGE_MSG, VALID_FILE_MSG);
         linkedList.get(index).adress = directory;
         ImageIcon image = new ImageIcon(directory);
         linkedList.get(index).image = image;
@@ -350,7 +351,7 @@ class UI extends JFrame{
     }
     
     private void search(){
-        String tag = input(ENTR_TAG_MSG, ENTR_VLD_TAG);
+        String tag = input(TAG_MSG, VALID_TAG_MSG);
         for (int i = ZERO; i < linkedList.size(); i++) {
             boolean isMatching = false;
             for (int j = ZERO; j < linkedList.get(i).tags.size(); j++) {
@@ -373,7 +374,7 @@ class UI extends JFrame{
     }
     
     private void loadData(){
-        String line = input(ENTR_FILE_MSG, ENTR_VLD_FILE_MSG);
+        String line = input(IMAGE_MSG, VALID_FILE_MSG);
         activeFile = line;
         createList();
     }
@@ -390,8 +391,8 @@ class UI extends JFrame{
     private void deleteTag() {
         if(list.getSelectedIndex() < ZERO) {
         } else {
-            if(
-                linkedList.get(list.getSelectedIndex()).tags.isEmpty()){
+            if(linkedList.get(list.getSelectedIndex()) == null) return;
+            if(linkedList.get(list.getSelectedIndex()).tags.isEmpty()){
                 linkedList.get(list.getSelectedIndex()).adress = "";
                 linkedList.get(list.getSelectedIndex()).image = null;
                 imagePanel.setIcon(null);
@@ -437,6 +438,11 @@ class UI extends JFrame{
         updateUIList();
     }
     
+    /** 
+     * Resizes the image inside the label to match the size of the label 
+     * 
+     * @param label the JLabel object to resize to
+     */
     private void resizeToContainer(JLabel label) {
         int       width         = label.getWidth();     // get label width
         int       height        = label.getHeight();    // get label height
