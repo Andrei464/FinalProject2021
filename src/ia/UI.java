@@ -29,36 +29,38 @@ import javax.swing.JTextArea;
 class UI extends JFrame{
 
     //Constant Variables
-    final private int               ZERO        = 0;
-    final private int               ONE         = 1;
-    final private int               TWO         = 2;
-    final private int               FOUR        = 4;
-    final private int               MARGIN      = 5;
-    final private int               SPACER      = 10;
-    final private int               B_HEIGHT    = 40;    
-    final private int               B_WIDTH     = 145;
+    final private int               ZERO            = 0;
+    final private int               ONE             = 1;
+    final private int               TWO             = 2;
+    final private int               FOUR            = 4;
+    final private int               MARGIN          = 5;
+    final private int               SPACER          = 10;
+    final private int               B_HEIGHT        = 40;    
+    final private int               B_WIDTH         = 145;
     
-    final private String            DEF_FILE    = "SavingTest.txt";
-    final private Color             BLACK       = Color.BLACK;
+    final private String            DEF_FILE        = "SavingTest.txt";
+    final private Color             BLACK           = Color.BLACK;
     
     //Non-Constant Variables
-    private String                  activeFile  = DEF_FILE;
+    private String                  activeFile      = DEF_FILE;
     
     //Objects 
-    private LinkedList<Data>        linkedList  = new LinkedList<>();
-    private FileHandler             filehandler = new FileHandler();
+    private LinkedList<Data>        linkedList      = new LinkedList<>();
+    private LinkedList<Data>        searchedList    = new LinkedList<>();
+    private FileHandler             filehandler     = new FileHandler();
     
     //UI Elements
-    private JTextArea               textbox     = new JTextArea();
-    private JLabel                  imagePanel  = new JLabel();
-    private JButton                 addIndex    = new JButton();
-    private JButton                 save        = new JButton();
-    private JButton                 deleteIndex = new JButton();
-    private JButton                 deleteTag   = new JButton();
-    private JButton                 enter       = new JButton();
-    private JButton                 load        = new JButton();
-    private Font                    font        = new Font("Helvetica", 20, 20);
-    private List                    list        = new List();
+    private JTextArea               textbox         = new JTextArea();
+    private JLabel                  imagePanel      = new JLabel();
+    private JButton                 addIndex        = new JButton();
+    private JButton                 save            = new JButton();
+    private JButton                 load            = new JButton();
+    private JButton                 deleteIndex     = new JButton();
+    private JButton                 deleteTag       = new JButton();
+    private JButton                 enter           = new JButton();
+    private JButton                 search          = new JButton();
+    private Font                    font            = new Font("", 20, 20);
+    private List                    list            = new List();
     private Icon                    icon;
     
     public UI(){
@@ -69,7 +71,9 @@ class UI extends JFrame{
     private void createList() {
         try{
             File file = new File(activeFile);
-            if(!file.exists() || file.length() == 0) file.createNewFile();
+            if(!file.exists() || file.length() == 0){
+                file.createNewFile();
+            }
             else{
                 try{
                     linkedList = 
@@ -91,13 +95,12 @@ class UI extends JFrame{
     private void updateUIList() {
         list.removeAll();
         for (int i = 0; i < linkedList.size(); i++) {
-            Data data = (Data)linkedList.get(i);
-            String line = "";
-            for (int j = 0; j < data.tags.size()-1; j++) {
-                line += data.tags.get(j) + ", ";
-            }
-            if(!data.tags.isEmpty()) line += data.tags.get(data.tags.size()-1);
-            list.add(line, i);
+            Data data = linkedList.get(i);
+            list.add(data.toString(), i);
+        }  
+        for (int i = 0; i < searchedList.size(); i++) {
+            Data data = searchedList.get(i);
+            list.add(data.toString(), i);
         }
     }
     
@@ -114,11 +117,12 @@ class UI extends JFrame{
         imagePanel.setBounds(SPACER, SPACER, 300, 300);
         imagePanel.setOpaque(true);
         imagePanel.setBorder(
-            BorderFactory.createMatteBorder(1,1,1,1,BLACK));
+            BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
         this.add(imagePanel);
         imagePanel.setVisible(true);
-        icon = new ImageIcon(
-            "C:\\Users\\A.sholokhov\\Desktop\\Maid Outfit.png");
+        icon = new ImageIcon("C:\\Users\\aasho\\Desktop\\Maid Outfit.png");
+        //C:\Users\aasho\Desktop\Maid Outfit.png
+        //C:\Users\A.sholokhov\Desktop\Maid Outfit.png
         imagePanel.setIcon(icon);
         resizeToContainer(imagePanel);
         
@@ -158,7 +162,8 @@ class UI extends JFrame{
         //Instantiate button
         deleteIndex.setBounds(SPACER,
             textbox.getY()+textbox.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
-        deleteIndex.setBorder(BorderFactory.createMatteBorder(1,1,1,1,BLACK));
+        deleteIndex.setBorder
+            (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
         deleteIndex.setText("Delete");
         deleteIndex.setFont(font);
         deleteIndex.addActionListener(new ActionListener() {
@@ -173,7 +178,8 @@ class UI extends JFrame{
         //Instantiate button
         enter.setBounds(deleteIndex.getX()+deleteIndex.getWidth()+SPACER,
             textbox.getY()+textbox.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
-        enter.setBorder(BorderFactory.createMatteBorder(1,1,1,1,BLACK));
+        enter.setBorder
+            (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
         enter.setFont(font);
         enter.setText("Enter");
         enter.addActionListener(new ActionListener() {
@@ -188,7 +194,8 @@ class UI extends JFrame{
         //Instantiate button
         save.setBounds(SPACER,
             enter.getY()+enter.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
-        save.setBorder(BorderFactory.createMatteBorder(1,1,1,1,BLACK));
+        save.setBorder
+            (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
         save.setFont(font);
         save.setText("Save");
         save.addActionListener(new ActionListener() {
@@ -203,7 +210,8 @@ class UI extends JFrame{
         //Instantiate button
         load.setBounds(deleteIndex.getX()+deleteIndex.getWidth()+SPACER,
             enter.getY()+enter.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
-        load.setBorder(BorderFactory.createMatteBorder(1,1,1,1,BLACK));
+        load.setBorder
+            (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
         load.setFont(font);
         load.setText("Load");
         load.addActionListener(new ActionListener() {
@@ -219,7 +227,7 @@ class UI extends JFrame{
         addIndex.setBounds(deleteIndex.getX()+deleteIndex.getWidth()+SPACER,
             load.getY()+load.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
         addIndex.setBorder
-            (BorderFactory.createMatteBorder(1,1,1,1,BLACK));
+            (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
         addIndex.setFont(font);
         addIndex.setText("Add Index");
         addIndex.addActionListener(new ActionListener() {
@@ -234,7 +242,8 @@ class UI extends JFrame{
         //Instantiate button
         deleteTag.setBounds(SPACER,
             save.getY()+save.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
-        deleteTag.setBorder(BorderFactory.createMatteBorder(1,1,1,1,BLACK));
+        deleteTag.setBorder
+            (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
         deleteTag.setFont(font);
         deleteTag.setText("Delete Tag");
         deleteTag.addActionListener(new ActionListener() {
@@ -246,8 +255,61 @@ class UI extends JFrame{
         this.add(deleteTag);
         deleteTag.setVisible(true);
         
+        //Instantiate button
+        search.setBounds(SPACER,
+            deleteTag.getY()+deleteTag.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
+        search.setBorder
+            (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
+        search.setFont(font);
+        search.setText("Search");
+        search.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                search();
+            }
+        });
+        this.add(search);
+        search.setVisible(true);
+        
         //Once all is done and set, reveal the interface to the user
         this.setVisible(true);
+    }
+    
+    private void search(){
+        if(searchedList.isEmpty()){}
+        else{
+            for (int i = 0; i < searchedList.size(); i++) {
+                linkedList.addFirst(searchedList.get(i));
+            }
+            searchedList.remove();
+        }
+        String line = "";
+        String title = "";
+        while(line == null || line.equals("")){
+            if(line == null) return;
+            line = JOptionPane.showInputDialog
+                (null,
+                "Enter the Tag You Want to Search by",
+                title,
+                JOptionPane.INFORMATION_MESSAGE);
+            title = "Enter a Valid Tag";
+        }
+        for (int i = 0; i < linkedList.size(); i++) {
+            boolean isMatching = false;
+            for (int j = 0; j < linkedList.get(i).tags.size(); j++) {
+                if(line.equals(linkedList.get(i).tags.get(j))){
+                    isMatching = true;
+                }
+            }
+            if(isMatching) {
+                searchedList.add(linkedList.get(i));
+            }
+            
+        }
+        for (int i = 0; i < searchedList.size(); i++) {
+            linkedList.remove(searchedList.get(i));
+        }
+        updateUIList();
     }
 
     private void save() {
@@ -272,7 +334,7 @@ class UI extends JFrame{
         activeFile = line;
         createList();
     }
-
+    
     private void deleteIndex() {
         if(list.getSelectedIndex() < 0) {} 
         else { 
@@ -291,7 +353,7 @@ class UI extends JFrame{
     
     private void keyPress(KeyEvent e){
         if(e.getKeyCode() == KeyEvent.VK_ENTER){
-            if(textbox.getText().equals("")|| imagePanel.getIcon() != null) {}
+            if(textbox.getText().equals("")) {}
             else{
                 enter();
             }
@@ -317,7 +379,6 @@ class UI extends JFrame{
         Data data = new Data();
         LinkedList<String> subList = new LinkedList<>();
         data.tags = subList;
-        subList.add(" ");
         linkedList.add(data);
         updateUIList();
     }
@@ -333,39 +394,4 @@ class UI extends JFrame{
         Icon newIcon               = new ImageIcon(newImage);  // set new image
         label.setIcon(newIcon);                            // set icon to label
     }
-    
-//    public void resizeToMaxRatio(JLabel label){
-//        resizeToContainer(label);
-//        ImageIcon oldIcon = (ImageIcon)label.getIcon();
-//        int iconWidth = oldIcon.getIconWidth();
-//        int iconHeight = oldIcon.getIconHeight();
-//        int gdc = gdc(iconWidth, iconHeight);
-//        int heightOffset = iconHeight / gdc;
-//        int widthOffset = iconWidth / gdc;
-//        int newIconHeight = iconHeight;
-//        int newIconWidth = iconWidth;
-//        System.out.println(widthOffset + ", " + heightOffset);
-//        if(iconHeight > label.getWidth() || iconWidth > label.getHeight()){
-//            System.out.println(newIconWidth + ", " + newIconHeight);
-//            while (newIconHeight > label.getWidth() &&
-//                    newIconWidth > label.getHeight()) {
-//                newIconHeight -= heightOffset;
-//                newIconWidth  -= widthOffset;
-//                System.out.println(newIconWidth + ", " + newIconHeight);
-//            }
-//            Image oldImage = oldIcon.getImage();
-//            Image newImage = oldImage.getScaledInstance
-//                (newIconWidth, newIconHeight, Image.SCALE_SMOOTH);
-//            Icon newIcon = new ImageIcon(newImage);
-//            label.setIcon(newIcon);
-//        }
-//        else{
-//            System.out.println("2");
-//        }
-//    }
-//    
-//    private int gdc(int p, int q) {
-//        if (q == ZERO) return p;
-//        else return gdc(q, p % q);
-//    }
 }

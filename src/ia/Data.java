@@ -29,10 +29,24 @@ public class Data implements Serializable{
         this(null,null);
     }
     
+    public boolean isEmpty(){
+        if(tags.isEmpty() && (adress.equals("") || adress == null)) return true;
+        else return false;
+    }
+    
     @Override
     public String toString(){
-        String data = "|" + adress + "|";
-        for (String tag : tags) data += tag + "|";
+        String data = "";
+        for (int i = 0; i < tags.size() - 1; i++) {
+            data += tags.get(i) + ", ";
+        }
+        
+        if(adress == null || adress.equals("")){
+            data += tags.getLast() ;
+        }
+        else{
+            data += tags.getLast() + ", Directory: " + adress;
+        }
         return data;
     }
 }
