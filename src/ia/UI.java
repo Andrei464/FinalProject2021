@@ -1,5 +1,7 @@
+/** required package class namespace */
 package ia;
 
+/** required imports */
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
@@ -21,6 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
+
 /**
 * UI.java - 
 *
@@ -39,8 +42,12 @@ class UI extends JFrame{
     final private int               FONT_SIZE       = 20;
     final private int               B_HEIGHT        = 40;    
     final private int               B_WIDTH         = 145;
+    final private int               I_SIZE          = 300;
+    final private int               F_HEIGHT        = 585;
+    final private int               F_WIDTH         = 1000;
     
-    final private String            DEF_FILE        = "SavingTest.txt";
+    final private String            DEF_FILE        = 
+        "SavingTest.txt";
     final private String            FILE_MSG        = 
         "Enter the Directory of the Database File";
     final private String            IMAGE_MSG       = 
@@ -51,6 +58,13 @@ class UI extends JFrame{
         "Enter a Valid Directory";
     final private String            VALID_TAG_MSG   = 
         "Enter a Valid Tag";
+    final private String            DATA_SAVED      = 
+        "Data Saved Successfully";
+    final private String            TAG_NOT_FOUND   = 
+        "Tag Not Found";
+    final private String            TAG_FOUND       = 
+        "Tag Found";
+    final private String            NAME;
     final private Color             BLACK           = Color.BLACK;
     
     //Non-Constant Variables
@@ -77,7 +91,8 @@ class UI extends JFrame{
     private List                    list            = new List();
     private Icon                    icon;
     
-    public UI(){
+    public UI(String name){
+        this.NAME = name;
         initUIElements();
         createList();
         
@@ -110,15 +125,15 @@ class UI extends JFrame{
     
     private void initUIElements(){
         //Instantiate the JFrame
-        this.setSize(1000, 585);
+        this.setSize(F_WIDTH, F_HEIGHT);
         this.setLocationRelativeTo(null);
-        this.setTitle("Photo Database");
+        this.setTitle(NAME);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setLayout(null);
         
         //Instantiate JLabel
-        imagePanel.setBounds(SPACER, SPACER, 300, 300);
+        imagePanel.setBounds(SPACER, SPACER, I_SIZE, I_SIZE);
         imagePanel.setOpaque(true);
         imagePanel.setBorder(
             BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
@@ -140,14 +155,10 @@ class UI extends JFrame{
             }
 
             @Override
-            public void keyPressed(KeyEvent e) {
-                
-            }
+            public void keyPressed(KeyEvent e) {}
 
             @Override
-            public void keyReleased(KeyEvent e) {
-                //keyPress(e);
-            }
+            public void keyReleased(KeyEvent e) {}
         });
         this.add(textbox);
         textbox.setVisible(true);
@@ -155,7 +166,7 @@ class UI extends JFrame{
         //Instantiate list
         list.setBounds(imagePanel.getX() + imagePanel.getWidth() + SPACER,
             SPACER, this.getWidth() - imagePanel.getWidth() - (SPACER * FOUR)
-            - MARGIN, 530);
+            - MARGIN, F_HEIGHT - B_HEIGHT - SPACER - MARGIN);
         list.add("",ZERO);
         list.addMouseListener(new MouseListener() {
             @Override
@@ -320,14 +331,22 @@ class UI extends JFrame{
     
     private void addImage(){
         int index = list.getSelectedIndex();
-        if(index < 0 || linkedList.get(index).adress != null) return;
+        if(index < ZERO || linkedList.get(index).adress != null) return;
         String directory = input(IMAGE_MSG, VALID_FILE_MSG);
-        linkedList.get(index).adress = directory;
-        ImageIcon image = new ImageIcon(directory);
-        linkedList.get(index).image = image;
-        imagePanel.setIcon(image);
-        resizeToContainer(imagePanel);
-        updateUIList();
+        if(directory == null) return;
+        File file = new File(directory);
+        if(file.exists()){
+            linkedList.get(index).adress = directory;
+            ImageIcon image = new ImageIcon(directory);
+            linkedList.get(index).image = image;
+            imagePanel.setIcon(image);
+            resizeToContainer(imagePanel);
+            updateUIList();
+        }
+        else{
+            output(VALID_FILE_MSG);
+            addImage();
+        }
     }
     
     private String input(String message, String error){
@@ -349,29 +368,39 @@ class UI extends JFrame{
     
     private void search(){
         String tag = input(TAG_MSG, VALID_TAG_MSG);
+        boolean exists = false;
         for (int i = ZERO; i < linkedList.size(); i++) {
             boolean isMatching = false;
             for (int j = ZERO; j < linkedList.get(i).tags.size(); j++) {
                 if(tag.equals(linkedList.get(i).tags.get(j))){
                     isMatching = true;
+                    exists = true;
                 }
+            }if(isMatching) searchedList.add(linkedList.get(i));
+        }
+        if(exists){
+            for (int i = ZERO; i < searchedList.size(); i++) {
+                linkedList.remove(searchedList.get(i));
+                linkedList.addFront(searchedList.get(i));
             }
-            if(isMatching) searchedList.add(linkedList.get(i));
-        }
-        for (int i = 0; i < searchedList.size(); i++) {
-            linkedList.remove(searchedList.get(i));
-            linkedList.addFront(searchedList.get(i));
-        }
-        updateUIList();
+            updateUIList();
+            output(TAG_FOUND);
+        } 
+        else output(TAG_NOT_FOUND);
+    }
+    
+    private void output(String message){
+        JOptionPane.showMessageDialog(null, message);
     }
 
     private void save() {
         filehandler.saveObject(linkedList, activeFile);
-        JOptionPane.showMessageDialog(null, "Data Saved Successfully");
+        output(DATA_SAVED);
     }
     
     private void loadData(){
         String line = input(IMAGE_MSG, VALID_FILE_MSG);
+        if(line == null) return;
         activeFile = line;
         createList();
     }
@@ -420,7 +449,9 @@ class UI extends JFrame{
             addIndex();
             index = list.getSelectedIndex() + ONE;
         }
-        index = list.getSelectedIndex();
+        else {
+            index = list.getSelectedIndex();
+        }
         if(index < ZERO || textbox.getText().equals("")) return;
         linkedList.get(index).tags.add(textbox.getText());
         textbox.setText("");

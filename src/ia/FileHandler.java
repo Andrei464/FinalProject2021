@@ -1,10 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/** required package class namespace */
 package ia;
 
+/** required imports */
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -13,9 +10,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 /**
- *
- * @author aasho
- */
+* Data.java - 
+*
+* @author Andrei S. 
+* @since Mar. 8, 2021 
+*/
 public class FileHandler <T>{
     
     /**

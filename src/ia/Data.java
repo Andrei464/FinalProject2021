@@ -1,5 +1,7 @@
+/** required package class namespace */
 package ia;
 
+/** required imports */
 import java.io.Serializable;
 import collections.LinkedList;
 import javax.swing.ImageIcon;

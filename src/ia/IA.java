@@ -1,3 +1,4 @@
+/** required package class namespace */
 package ia;
 
 /**
@@ -8,11 +9,12 @@ package ia;
 */
 public class IA {
     
+    static private final String NAME = "Photo Database";
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        UI ui = new UI();
+        UI ui = new UI(NAME);
     }
-
 }
