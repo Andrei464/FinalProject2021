@@ -74,43 +74,6 @@ public class Node <T> implements Serializable
     public Node() {
         this(null,null,null);
     }
-        
-    /**
-     * String representation of this object
-     *
-     * @return The object represented as a String
-     */
-    @Override
-    public String toString() {
-        if (data == null) return null;              // invalid data, output null
-        return data.toString();                     // output data in node
-    }
-    
-    /**
-     * Deep comparison, determines if two objects are "equal" in this context
-     *
-     * @param object the object to compare to
-     * @return the objects are "equal" (true) or not (false)
-     */
-    @Override
-    public boolean equals(Object object) {
-        if (this.data == null) return false;
-        if (object    == null) return false;    // error checks
-        Node that = (Node)object;               // cast object into node
-        if (that.data == null || this.data == null) return false;
-        return this.data.equals(that.data);     // compare data in nodes
-    }
-        
-    /**
-     * a Deep clone, creates a duplicate object using new memory
-     *
-     * @return a "clone" of the object using new memory
-     */
-    @Override
-    public Node clone() {
-        return new Node(data,next,previous);
-        // annonymous object
-    }
     
     /**
      * Frees up all memory used by this object

@@ -14,7 +14,6 @@ public class IA {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-//        DataLinkedList data = new DataLinkedList();
         UI ui = new UI();
     }
 
