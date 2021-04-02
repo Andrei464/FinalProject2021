@@ -7,8 +7,6 @@ package ia;
 * @since Mar. 1, 2021 
 */
 public class IA {
-
-    //Make a database of linked lists of data
     
     /**
      * @param args the command line arguments

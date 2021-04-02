@@ -44,11 +44,11 @@ class UI extends JFrame{
     final private String            FILE_MSG        = 
         "Enter the Directory of the Database File";
     final private String            IMAGE_MSG       = 
-        "Enter a URL or the Directory of the Image";
+        "Enter the Directory of the Image";
     final private String            TAG_MSG         = 
         "Enter the Tag You Want to Search by";
     final private String            VALID_FILE_MSG  = 
-        "Enter a Valid URL or Directory";
+        "Enter a Valid Directory";
     final private String            VALID_TAG_MSG   = 
         "Enter a Valid Tag";
     final private Color             BLACK           = Color.BLACK;
@@ -316,8 +316,6 @@ class UI extends JFrame{
         if(index < ZERO || linkedList.size() < index) return;
         imagePanel.setIcon(linkedList.get(list.getSelectedIndex()).image);
         resizeToContainer(imagePanel);
-//        this.revalidate();
-//        this.repaint();
     }
     
     private void addImage(){
