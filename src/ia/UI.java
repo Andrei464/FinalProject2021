@@ -40,11 +40,11 @@ class UI extends JFrame{
     final private int               MARGIN              = 5;
     final private int               SPACER              = 10;
     final private int               FONT_SIZE           = 20;
-    final private int               B_HEIGHT            = 40;    
-    final private int               B_WIDTH             = 145;
-    final private int               I_SIZE              = 300;
-    final private int               F_HEIGHT            = 585;
-    final private int               F_WIDTH             = 1000;
+    final private int               BUTTON_HEIGHT       = 40;    
+    final private int               BUTTON_WIDTH        = 145;
+    final private int               IMAGE_SIZE          = 300;
+    final private int               FRAME_HEIGHT        = 585;
+    final private int               FRAME_WIDTH         = 1000;
     
     final private String            DEFAULT_FILE        = 
         "Database.txt";
@@ -76,29 +76,28 @@ class UI extends JFrame{
     //Objects 
     private LinkedList<Data>        linkedList          = new LinkedList<>();
     private LinkedList<Data>        searchedList        = new LinkedList<>();
-    private FileHandler             filehandler         = new FileHandler();
+    final private FileHandler       filehandler         = new FileHandler();
     
     //UI Elements
-    private JTextArea               textbox             = new JTextArea();
-    private JLabel                  imagePanel          = new JLabel();
-    private JButton                 addIndex            = new JButton();
-    private JButton                 save                = new JButton();
-    private JButton                 load                = new JButton();
-    private JButton                 deleteIndex         = new JButton();
-    private JButton                 deleteTag           = new JButton();
-    private JButton                 enterTag            = new JButton();
-    private JButton                 search              = new JButton();
-    private JButton                 addImage            = new JButton();            
-    private Font                    font                = new Font
+    final private JTextArea         textbox             = new JTextArea();
+    final private JLabel            imagePanel          = new JLabel();
+    final private JButton           addIndex            = new JButton();
+    final private JButton           save                = new JButton();
+    final private JButton           load                = new JButton();
+    final private JButton           deleteIndex         = new JButton();
+    final private JButton           deleteTag           = new JButton();
+    final private JButton           enterTag            = new JButton();
+    final private JButton           search              = new JButton();
+    final private JButton           addImage            = new JButton();            
+    final private Font              defaultFont         = new Font
         ("", FONT_SIZE, FONT_SIZE);
-    private List                    list                = new List();
+    final private List                    list                = new List();
     
     public UI(String name){
-        this.NAME = name;
+        NAME = name;
         initUIElements();
         createList();
-        
-        //Once all is done and set, reveal the interface to the user
+        //Once all is ready and set, reveal the interface to the user
         this.setVisible(true);
     }
 
@@ -107,19 +106,11 @@ class UI extends JFrame{
             String newFile;
             File file;
             if(activeFile == null) {
-                System.out.println("activeFile = null");
                 newFile = filehandler.open(ACTIVE_DATA_FILE);
-                if(newFile == null){
-                    file = new File(DEFAULT_FILE);
-                }
-                else{
-                    file = new File(newFile);
-                }
+                if(newFile == null) file = new File(DEFAULT_FILE);
+                else file = new File(newFile);
             }
-            else {
-                file = new File(activeFile);
-            }
-            
+            else file = new File(activeFile);
             if(!file.exists() || file.length() == ZERO) file.createNewFile();
             else{
                 linkedList = 
@@ -142,7 +133,7 @@ class UI extends JFrame{
     
     private void initUIElements(){
         //Instantiate the JFrame
-        this.setSize(F_WIDTH, F_HEIGHT);
+        this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         this.setLocationRelativeTo(null);
         this.setTitle(NAME);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -150,7 +141,7 @@ class UI extends JFrame{
         this.setLayout(null);
         
         //Instantiate JLabel
-        imagePanel.setBounds(SPACER, SPACER, I_SIZE, I_SIZE);
+        imagePanel.setBounds(SPACER, SPACER, IMAGE_SIZE, IMAGE_SIZE);
         imagePanel.setOpaque(true);
         imagePanel.setBorder(
             BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
@@ -182,7 +173,7 @@ class UI extends JFrame{
         //Instantiate list
         list.setBounds(imagePanel.getX() + imagePanel.getWidth() + SPACER,
             SPACER, this.getWidth() - imagePanel.getWidth() - (SPACER * FOUR)
-            - MARGIN, F_HEIGHT - B_HEIGHT - SPACER - MARGIN);
+            - MARGIN, FRAME_HEIGHT - BUTTON_HEIGHT - SPACER - MARGIN);
         list.add("",ZERO);
         list.addMouseListener(new MouseListener() {
             @Override
@@ -211,11 +202,11 @@ class UI extends JFrame{
         
         //Instantiate button
         deleteTag.setBounds(SPACER,
-            textbox.getY()+textbox.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
+            textbox.getY()+textbox.getHeight()+SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
         deleteTag.setBorder
             (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
         deleteTag.setText("Delete Tag");
-        deleteTag.setFont(font);
+        deleteTag.setFont(defaultFont);
         deleteTag.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -227,10 +218,10 @@ class UI extends JFrame{
         
         //Instantiate button
         enterTag.setBounds(deleteTag.getX()+deleteTag.getWidth()+SPACER,
-            textbox.getY()+textbox.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
+            textbox.getY()+textbox.getHeight()+SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
         enterTag.setBorder
             (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
-        enterTag.setFont(font);
+        enterTag.setFont(defaultFont);
         enterTag.setText("Enter Tag");
         enterTag.addActionListener(new ActionListener() {
             @Override
@@ -243,10 +234,10 @@ class UI extends JFrame{
         
         //Instantiate button
         save.setBounds(SPACER,
-            enterTag.getY()+enterTag.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
+            enterTag.getY()+enterTag.getHeight()+SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
         save.setBorder
             (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
-        save.setFont(font);
+        save.setFont(defaultFont);
         save.setText("Save");
         save.addActionListener(new ActionListener() {
             @Override
@@ -259,10 +250,10 @@ class UI extends JFrame{
         
         //Instantiate button
         load.setBounds(deleteTag.getX()+deleteTag.getWidth()+SPACER,
-            enterTag.getY()+enterTag.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
+            enterTag.getY()+enterTag.getHeight()+SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
         load.setBorder
             (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
-        load.setFont(font);
+        load.setFont(defaultFont);
         load.setText("Load");
         load.addActionListener(new ActionListener() {
             @Override
@@ -275,10 +266,10 @@ class UI extends JFrame{
         
         //Instantiate button
         addIndex.setBounds(deleteTag.getX()+deleteTag.getWidth()+SPACER,
-            load.getY()+load.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
+            load.getY()+load.getHeight()+SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
         addIndex.setBorder
             (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
-        addIndex.setFont(font);
+        addIndex.setFont(defaultFont);
         addIndex.setText("Add Index");
         addIndex.addActionListener(new ActionListener() {
             @Override
@@ -291,10 +282,10 @@ class UI extends JFrame{
         
         //Instantiate button
         deleteIndex.setBounds(SPACER,
-            save.getY()+save.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
+            save.getY()+save.getHeight()+SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
         deleteIndex.setBorder
             (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
-        deleteIndex.setFont(font);
+        deleteIndex.setFont(defaultFont);
         deleteIndex.setText("Delete Index");
         deleteIndex.addActionListener(new ActionListener() {
             @Override
@@ -307,10 +298,10 @@ class UI extends JFrame{
         
         //Instantiate button
         search.setBounds(SPACER, deleteIndex.getY()+deleteIndex.getHeight() +
-            SPACER, B_WIDTH, B_HEIGHT);
+            SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
         search.setBorder
             (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
-        search.setFont(font);
+        search.setFont(defaultFont);
         search.setText("Search");
         search.addActionListener(new ActionListener() {
             @Override
@@ -323,10 +314,10 @@ class UI extends JFrame{
         
         //Instantiate button
         addImage.setBounds(search.getX()+search.getWidth()+SPACER,
-            addIndex.getY()+addIndex.getHeight()+SPACER, B_WIDTH, B_HEIGHT);
+            addIndex.getY()+addIndex.getHeight()+SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
         addImage.setBorder
             (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
-        addImage.setFont(font);
+        addImage.setFont(defaultFont);
         addImage.setText("Add Image");
         addImage.addActionListener(new ActionListener() {
             @Override
@@ -369,17 +360,15 @@ class UI extends JFrame{
     private String input(String message, String error){
         String line = "";
         String title = "";
-        while(line == null || line.equals("")){
-            if(line == null){
-                return null;
-            }
+        do{
             line = JOptionPane.showInputDialog
                 (null,
                 message,
                 title,
                 JOptionPane.INFORMATION_MESSAGE);
+            if(line == null) return null;
             title = error;
-        }
+        }while(line.equals(""));
         return line;
     }
     
@@ -416,31 +405,42 @@ class UI extends JFrame{
         File file = new File(directory);
         if(file.exists()){
             filehandler.saveObject(linkedList, file);
-            saveActiveDatabasePath();
+            saveActiveDatabaseFile();
         }
         else{
             try{
                 file.createNewFile();
                 filehandler.saveObject(linkedList, file);
-                saveActiveDatabasePath();
+                saveActiveDatabaseFile();
             }
             catch(IOException e){
                 output(VALID_FILE_MSG);
+                return;
             }
         }
         output(DATA_SAVED);
     }
 
-    private void saveActiveDatabasePath() {
+    private void saveActiveDatabaseFile() {
         filehandler.save(activeFile, ACTIVE_DATA_FILE);
     }
     
     private void loadData(){
-        String line = input(FILE_MSG, VALID_FILE_MSG);
-        if(line == null) return;
+        String line;
+        String message = FILE_MSG;
+        do{
+            line = input(message, VALID_FILE_MSG);
+            if(line == null) return;
+            message = VALID_FILE_MSG;
+        }while(!legitimatePath(line));
         activeFile = line;
-        saveActiveDatabasePath();
+        saveActiveDatabaseFile();
         createList();
+    }
+    
+    private boolean legitimatePath(String line){
+        File file = new File(line);
+        return file.exists();
     }
     
     private void deleteIndex() {
