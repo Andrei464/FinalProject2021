@@ -18,17 +18,8 @@ public class Data implements Serializable{
     public LinkedList<String> tags;
     public ImageIcon image;
     
-    public Data(String url, ImageIcon image){
-        this.adress = url;
-        this.image = image;
-    }
-    
-    public Data(String url){
-        this(url,null);
-    }
-    
     public Data(){
-        this(null,null);
+    
     }
     
     private boolean isEmpty(){
@@ -40,15 +31,11 @@ public class Data implements Serializable{
     public String toString(){
         String data = "";
         if(!tags.isEmpty()){
-            for (int i = 0; i < tags.size() - 1; i++) {
+            for (int i = 0; i < tags.size() - 1; i++){
                 data += tags.get(i) + ", ";
             }
-            if(adress == null || adress.equals("")){
-                data += tags.back() ;
-            }
-            else{
-                data += tags.back() + ", Directory: " + adress;
-            }
+            if(adress == null || adress.equals("")) data += tags.back() ;
+            else data += tags.back() + ", Directory: " + adress;
         }
         else{
             if(adress == null || adress.equals("")) data = " ";

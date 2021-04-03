@@ -20,44 +20,11 @@ public class Node <T> implements Serializable
     /** Self reference (pointer) to the previous node in the "list" */
     public Node previous;
     
-        
-    /**
-     * Class constructor sets class properties 
-     * 
-     * @param data the node data
-     * @param next reference to the next Node object
-     * @param previous reference to the previous Node object
-     */
-    public Node(T data, Node next, Node previous) {
-        this.data     = data;
-        this.next     = next;
-        this.previous = previous;
-    }
-       
-    /**
-     * Class constructor sets class properties 
-     * 
-     * @param data the node data
-     * @param next reference to the next Node object
-     */
-    public Node(T data, Node next) {
-        this(data,next,null);
-    }
-        
-    /**
-     * Class constructor sets class properties 
-     * 
-     * @param data the node data
-     */
-    public Node(T data) {
-        this(data,null,null);
-    }
-    
     /** 
      * Default constructor, sets class properties
      */
     public Node() {
-        this(null,null,null);
+        
     }
     
     /**

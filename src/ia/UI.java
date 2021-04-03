@@ -396,7 +396,8 @@ class UI extends JFrame{
     }
     
     private void output(String message){
-        JOptionPane.showMessageDialog(null, message);
+        JOptionPane.showMessageDialog
+        (null, message,NAME,JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void saveData() {
@@ -486,9 +487,7 @@ class UI extends JFrame{
             addIndex();
             index = list.getSelectedIndex() + ONE;
         }
-        else {
-            index = list.getSelectedIndex();
-        }
+        else index = list.getSelectedIndex();
         if(index < ZERO || textbox.getText().equals("")) return;
         linkedList.get(index).tags.add(textbox.getText());
         textbox.setText("");
