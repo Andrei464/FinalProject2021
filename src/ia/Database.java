@@ -7,7 +7,7 @@ package ia;
 * @author Andrei S. 
 * @since Mar. 1, 2021 
 */
-public class IA {
+public class Database {
     
     static private final String NAME = "Photo Database";
     

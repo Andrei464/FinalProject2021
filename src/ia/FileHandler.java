@@ -24,7 +24,9 @@ public class FileHandler <T>{
     /**
      * The default constructor of the class
      */
-    public FileHandler(){}
+    public FileHandler(){
+    
+    }
     
     /**
      * Opens the passed filename and reads the generic object from it
