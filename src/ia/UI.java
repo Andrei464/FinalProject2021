@@ -33,63 +33,65 @@ import javax.swing.JTextArea;
 class UI extends JFrame{
 
     //Constant Variables
-    final private int               ZERO            = 0;
-    final private int               ONE             = 1;
-    final private int               TWO             = 2;
-    final private int               FOUR            = 4;
-    final private int               MARGIN          = 5;
-    final private int               SPACER          = 10;
-    final private int               FONT_SIZE       = 20;
-    final private int               B_HEIGHT        = 40;    
-    final private int               B_WIDTH         = 145;
-    final private int               I_SIZE          = 300;
-    final private int               F_HEIGHT        = 585;
-    final private int               F_WIDTH         = 1000;
+    final private int               ZERO                = 0;
+    final private int               ONE                 = 1;
+    final private int               TWO                 = 2;
+    final private int               FOUR                = 4;
+    final private int               MARGIN              = 5;
+    final private int               SPACER              = 10;
+    final private int               FONT_SIZE           = 20;
+    final private int               B_HEIGHT            = 40;    
+    final private int               B_WIDTH             = 145;
+    final private int               I_SIZE              = 300;
+    final private int               F_HEIGHT            = 585;
+    final private int               F_WIDTH             = 1000;
     
-    final private String            DEF_FILE        = 
-        "SavingTest.txt";
-    final private String            FILE_MSG        = 
+    final private String            DEFAULT_FILE        = 
+        "Database.txt";
+    final private String            ACTIVE_DATA_FILE    = 
+        "Previus_Database.txt";
+    final private String            FILE_MSG            = 
         "Enter the Directory of the Database File";
-    final private String            IMAGE_MSG       = 
+    final private String            IMAGE_MSG           = 
         "Enter the Directory of the Image";
-    final private String            TAG_MSG         = 
+    final private String            TAG_MSG             = 
         "Enter the Tag You Want to Search by";
-    final private String            VALID_FILE_MSG  = 
+    final private String            VALID_FILE_MSG      = 
         "Enter a Valid Directory";
-    final private String            VALID_TAG_MSG   = 
+    final private String            VALID_TAG_MSG       = 
         "Enter a Valid Tag";
-    final private String            DATA_SAVED      = 
+    final private String            DATA_SAVED          = 
         "Data Saved Successfully";
-    final private String            TAG_NOT_FOUND   = 
+    final private String            TAG_NOT_FOUND       = 
         "Tag Not Found";
-    final private String            TAG_FOUND       = 
+    final private String            TAG_FOUND           = 
         "Tag Found";
     final private String            NAME;
-    final private Color             BLACK           = Color.BLACK;
+    final private Color             BLACK               = Color.BLACK;
     
     //Non-Constant Variables
-    private String                  activeFile      = DEF_FILE;
+    private String                  activeFile;
+    
     
     //Objects 
-    private LinkedList<Data>        linkedList      = new LinkedList<>();
-    private LinkedList<Data>        searchedList    = new LinkedList<>();
-    private FileHandler             filehandler     = new FileHandler();
+    private LinkedList<Data>        linkedList          = new LinkedList<>();
+    private LinkedList<Data>        searchedList        = new LinkedList<>();
+    private FileHandler             filehandler         = new FileHandler();
     
     //UI Elements
-    private JTextArea               textbox         = new JTextArea();
-    private JLabel                  imagePanel      = new JLabel();
-    private JButton                 addIndex        = new JButton();
-    private JButton                 save            = new JButton();
-    private JButton                 load            = new JButton();
-    private JButton                 deleteIndex     = new JButton();
-    private JButton                 deleteTag       = new JButton();
-    private JButton                 enterTag        = new JButton();
-    private JButton                 search          = new JButton();
-    private JButton                 addImage        = new JButton();            
-    private Font                    font            = 
-        new Font("", FONT_SIZE, FONT_SIZE);
-    private List                    list            = new List();
-    private Icon                    icon;
+    private JTextArea               textbox             = new JTextArea();
+    private JLabel                  imagePanel          = new JLabel();
+    private JButton                 addIndex            = new JButton();
+    private JButton                 save                = new JButton();
+    private JButton                 load                = new JButton();
+    private JButton                 deleteIndex         = new JButton();
+    private JButton                 deleteTag           = new JButton();
+    private JButton                 enterTag            = new JButton();
+    private JButton                 search              = new JButton();
+    private JButton                 addImage            = new JButton();            
+    private Font                    font                = new Font
+        ("", FONT_SIZE, FONT_SIZE);
+    private List                    list                = new List();
     
     public UI(String name){
         this.NAME = name;
@@ -102,7 +104,22 @@ class UI extends JFrame{
 
     private void createList() {
         try{
-            File file = new File(activeFile);
+            String newFile;
+            File file;
+            if(activeFile == null) {
+                System.out.println("activeFile = null");
+                newFile = filehandler.open(ACTIVE_DATA_FILE);
+                if(newFile == null){
+                    file = new File(DEFAULT_FILE);
+                }
+                else{
+                    file = new File(newFile);
+                }
+            }
+            else {
+                file = new File(activeFile);
+            }
+            
             if(!file.exists() || file.length() == ZERO) file.createNewFile();
             else{
                 linkedList = 
@@ -139,7 +156,6 @@ class UI extends JFrame{
             BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
         this.add(imagePanel);
         imagePanel.setVisible(true);
-        imagePanel.setIcon(icon);
         resizeToContainer(imagePanel);
         
         //Instantiate the text box
@@ -235,7 +251,7 @@ class UI extends JFrame{
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                save();
+                saveData();
             }
         });
         this.add(save);
@@ -325,6 +341,7 @@ class UI extends JFrame{
     private void updateImage() {
         int index = list.getSelectedIndex();
         if(index < ZERO || linkedList.size() < index) return;
+        if(linkedList.get(list.getSelectedIndex()) == null) return;
         imagePanel.setIcon(linkedList.get(list.getSelectedIndex()).image);
         resizeToContainer(imagePanel);
     }
@@ -393,15 +410,36 @@ class UI extends JFrame{
         JOptionPane.showMessageDialog(null, message);
     }
 
-    private void save() {
-        filehandler.saveObject(linkedList, activeFile);
+    private void saveData() {
+        String directory = input(FILE_MSG, VALID_FILE_MSG);
+        if(directory == null) return;
+        File file = new File(directory);
+        if(file.exists()){
+            filehandler.saveObject(linkedList, file);
+            saveActiveDatabasePath();
+        }
+        else{
+            try{
+                file.createNewFile();
+                filehandler.saveObject(linkedList, file);
+                saveActiveDatabasePath();
+            }
+            catch(IOException e){
+                output(VALID_FILE_MSG);
+            }
+        }
         output(DATA_SAVED);
+    }
+
+    private void saveActiveDatabasePath() {
+        filehandler.save(activeFile, ACTIVE_DATA_FILE);
     }
     
     private void loadData(){
-        String line = input(IMAGE_MSG, VALID_FILE_MSG);
+        String line = input(FILE_MSG, VALID_FILE_MSG);
         if(line == null) return;
         activeFile = line;
+        saveActiveDatabasePath();
         createList();
     }
     
@@ -440,7 +478,6 @@ class UI extends JFrame{
         else if (e.getKeyCode() == KeyEvent.VK_DELETE){
             deleteIndex();
         }
-        else{}
     }
 
     private void enterTag() {
@@ -457,7 +494,7 @@ class UI extends JFrame{
         textbox.setText("");
         updateUIList();
     }
-
+    
     private void addIndex() {
         Data data = new Data();
         LinkedList<String> subList = new LinkedList<>();
@@ -465,21 +502,21 @@ class UI extends JFrame{
         linkedList.add(data);
         updateUIList();
     }
-    
+        
     /** 
      * Resizes the image inside the label to match the size of the label 
      * 
      * @param label the JLabel object to resize to
      */
     private void resizeToContainer(JLabel label) {
-        int       width         = label.getWidth();     // get label width
-        int       height        = label.getHeight();    // get label height
-        ImageIcon originalIcon  = (ImageIcon)label.getIcon();   // get icon
-        if (originalIcon == null) return;               // error trap
-        Image     originalImage = originalIcon.getImage();      // get image
-        Image     newImage      = originalImage.getScaledInstance(
+        int width = label.getWidth();                       // get label width
+        int height = label.getHeight();                     // get label height
+        ImageIcon originalIcon = (ImageIcon)label.getIcon();// get icon
+        if (originalIcon == null) return;                   // error trap
+        Image originalImage = originalIcon.getImage();      // get image
+        Image newImage = originalImage.getScaledInstance(
             width,height,Image.SCALE_SMOOTH);
-        Icon newIcon               = new ImageIcon(newImage);  // set new image
-        label.setIcon(newIcon);                            // set icon to label
+        Icon newIcon = new ImageIcon(newImage);             // set new image
+        label.setIcon(newIcon);                             // set icon to label
     }
 }
