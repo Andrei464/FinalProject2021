@@ -23,7 +23,7 @@ public class Node <T> implements Serializable
     /** 
      * Default constructor, sets class properties
      */
-    public Node() {
+    public Node(T data) {
         
     }
     
