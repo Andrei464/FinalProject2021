@@ -10,8 +10,7 @@ import java.io.Serializable;
  * @param <T> the generic data type used in the class
  * @since Mar. 1, 2021 
  */
-public class Node <T> implements Serializable
-{
+public class Node <T> implements Serializable {
     
      /** the generic data to store */
     public T data;    
@@ -20,11 +19,37 @@ public class Node <T> implements Serializable
     /** Self reference (pointer) to the previous node in the "list" */
     public Node previous;
     
+    public Node(T data, Node next, Node previous) {
+        this.data = data;
+        this.next = next;
+        this.previous = previous;
+    }
+    
+       
+    /**
+     * Class constructor sets class properties 
+     * 
+     * @param data the node data
+     * @param next reference to the next Node object
+     */
+    public Node(T data, Node next) {
+        this(data,next,null);
+    }
+        
+    /**
+     * Class constructor sets class properties 
+     * 
+     * @param data the node data
+     */
+    public Node(T data) {
+        this(data,null,null);
+    }
+    
     /** 
      * Default constructor, sets class properties
      */
-    public Node(T data) {
-        
+    public Node() {
+        this(null,null,null);
     }
     
     /**

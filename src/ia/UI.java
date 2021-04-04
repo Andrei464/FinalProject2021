@@ -30,7 +30,7 @@ import javax.swing.JTextArea;
 * @author Andrei S. 
 * @since Mar. 8, 2021 
 */
-class UI extends JFrame{
+class UI extends JFrame {
 
     //Constant Variables
     final private int               ZERO                = 0;
@@ -171,9 +171,11 @@ class UI extends JFrame{
         textbox.setVisible(true);
         
         //Instantiate list
+//        list.setBounds(imagePanel.getX() + imagePanel.getWidth() + SPACER,
+//            SPACER, this.getWidth() - imagePanel.getWidth() - (SPACER * FOUR)
+//            - MARGIN, FRAME_HEIGHT - BUTTON_HEIGHT - SPACER - MARGIN);
         list.setBounds(imagePanel.getX() + imagePanel.getWidth() + SPACER,
-            SPACER, this.getWidth() - imagePanel.getWidth() - (SPACER * FOUR)
-            - MARGIN, FRAME_HEIGHT - BUTTON_HEIGHT - SPACER - MARGIN);
+            SPACER, 200, 100);
         list.add("",ZERO);
         list.addMouseListener(new MouseListener() {
             @Override
@@ -338,8 +340,10 @@ class UI extends JFrame{
     }
     
     private void addImage(){
+        
         int index = list.getSelectedIndex();
         if(index < ZERO || linkedList.get(index).adress != null) return;
+
         String directory = input(IMAGE_MSG, VALID_FILE_MSG);
         if(directory == null) return;
         File file = new File(directory);

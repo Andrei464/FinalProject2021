@@ -10,8 +10,7 @@ import java.io.Serializable;
  * @param <T> the generic data type used in the class
  * @since Mar. 1, 2021 
  */
-public class LinkedList <T> implements Serializable
-{
+public class LinkedList <T> implements Serializable {
     
     /** Flag to indicate a search was not found */
     public final int NOT_FOUND = -1;

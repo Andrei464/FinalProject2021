@@ -19,7 +19,7 @@ import java.io.PrintWriter;
 * @author Andrei S. 
 * @since Mar. 8, 2021 
 */
-public class FileHandler <T>{
+public class FileHandler <T> {
     
     /**
      * The default constructor of the class

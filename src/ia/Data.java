@@ -12,7 +12,7 @@ import javax.swing.ImageIcon;
 * @author Andrei S. 
 * @since Mar. 8, 2021 
 */
-public class Data implements Serializable{
+public class Data implements Serializable {
 
     public String adress;
     public LinkedList<String> tags;
