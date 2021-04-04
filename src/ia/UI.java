@@ -81,7 +81,8 @@ class UI extends JFrame {
      * holds the data input by the user
      */
     private LinkedList<Data>        linkedList          = new LinkedList<>();
-    /** */
+    
+    /** An instance of the FileHandler class that saves and loads data*/
     private FileHandler             filehandler         = new FileHandler();
     
     //UI Elements
@@ -99,6 +100,10 @@ class UI extends JFrame {
         ("", FONT_SIZE, FONT_SIZE);
     final private List                    list                = new List();
     
+    /**
+     * The constructor of the UI class
+     * @param name the name of the program
+     */
     public UI(String name){
         NAME = name;
         initUIElements();
@@ -107,6 +112,10 @@ class UI extends JFrame {
         this.setVisible(true);
     }
 
+    /**
+     * This method loads the list from the current active file, and if it fails
+     * the file is then created in the specified directory
+     */
     private void createList() {
         try{
             String newFile;
@@ -129,6 +138,10 @@ class UI extends JFrame {
         catch(IOException e){}
     }
 
+    /**
+     * Wipes clean the list and then puts the linkedList entries into it, 
+     * each line being a separate object in the linkedList
+     */
     private void updateUIList() {
         list.removeAll();
         for (int i = ZERO; i < linkedList.size(); i++) {
@@ -137,6 +150,9 @@ class UI extends JFrame {
         }  
     }
     
+    /**
+     * Initializes the UI elements, the buttons, the list and the image frame
+     */
     private void initUIElements(){
         //Instantiate the JFrame
         this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
@@ -333,6 +349,10 @@ class UI extends JFrame {
         addImage.setVisible(true);
     }
 
+    /**
+     * Updates the image displays in the imagePanel object to make sure the 
+     * proper image is displayed
+     */
     private void updateImage() {
         int index = list.getSelectedIndex();
         if(index < ZERO || linkedList.size() < index) return;
@@ -341,11 +361,13 @@ class UI extends JFrame {
         resizeToContainer(imagePanel);
     }
     
+    /**
+     * This method is called to load an image from the selected index, the user
+     * is asked for where the image comes from
+     */
     private void addImage(){
-        
         int index = list.getSelectedIndex();
         if(index < ZERO || linkedList.get(index).address != null) return;
-
         String directory = input(IMAGE_MSG, VALID_FILE_MSG);
         if(directory == null) return;
         File file = new File(directory);
@@ -363,6 +385,14 @@ class UI extends JFrame {
         }
     }
     
+    /**
+     * This method allows the user to input a string that is returned to where
+     * the method was called
+     * @param message the initial message displayed by the dialog box
+     * @param error the message the dialog box displays after the user has 
+     * input an invalid string
+     * @return the string the user inputs
+     */
     private String input(String message, String error){
         String line = "";
         String title = "";
@@ -378,6 +408,12 @@ class UI extends JFrame {
         return line;
     }
     
+    /**
+     * searches the linkedList for the key word the user enters, if the word
+     * matches the search it is pushed to the top of the linkedList and the UI
+     * is updated to display the matching indexes, if the tag is not found the 
+     * user is told through the use of the output method
+     */
     private void search(){
         LinkedList<Data> searchedList = new LinkedList<>();
         String tag = input(TAG_MSG, VALID_TAG_MSG);
@@ -402,11 +438,21 @@ class UI extends JFrame {
         else output(TAG_NOT_FOUND);
     }
     
+    /**
+     * displays the message String to the user to inform them of what the
+     * program has done
+     * @param message the message displayed or told to the user
+     */
     private void output(String message){
         JOptionPane.showMessageDialog
         (null, message,NAME,JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * saves the linkedList object to the active directory and saves where it
+     * saves it to load it the next time the user opens the program, the method
+     * notifies the user when it has successfully saved the data
+     */
     private void saveData() {
         String directory = input(FILE_MSG, VALID_FILE_MSG);
         if(directory == null) return;
@@ -429,10 +475,17 @@ class UI extends JFrame {
         output(DATA_SAVED);
     }
 
+    /**
+     * saves what file the user accessed last
+     */
     private void saveActiveDatabaseFile() {
         filehandler.save(activeFile, ACTIVE_DATA_FILE);
     }
     
+    /**
+     * loads the linkedList from the currently activeFile and then updates the
+     * List to display it
+     */
     private void loadData(){
         String line;
         String message = FILE_MSG;
@@ -446,11 +499,19 @@ class UI extends JFrame {
         createList();
     }
     
+    /**
+     * tests if the string parameter is a valid file path 
+     * @param line the file path being tested
+     * @return if the file exits true, if not false
+     */
     private boolean legitimatePath(String line){
         File file = new File(line);
         return file.exists();
     }
     
+    /**
+     * safely deletes the selected index from the list and updates the UI
+     */
     private void deleteIndex() {
         if(list.getSelectedIndex() < ZERO) {} 
         else { 
@@ -460,6 +521,10 @@ class UI extends JFrame {
         }
     }
     
+    /**
+     * deletes the last tag entered into the tags LinkedList of the Data object
+     * currently selected by the user
+     */
     private void deleteTag() {
         if(list.getSelectedIndex() < ZERO) {
         } else {
@@ -476,6 +541,11 @@ class UI extends JFrame {
         }
     }
     
+    /**
+     * if the user presses the enter key the enterTag() method is called
+     * if the user presses the delete key the deleteIndex() method is called
+     * @param e the key that was pressed
+     */
     private void keyPress(KeyEvent e){
         if(e.getKeyCode() == KeyEvent.VK_ENTER){
             if(textbox.getText().equals("")) {}
@@ -488,6 +558,11 @@ class UI extends JFrame {
         }
     }
 
+    /**
+     * enters a new tag to the tags LinkedList of the selected Data and then
+     * updates the UI to show the new tag, it also empties the text box for 
+     * convinience
+     */
     private void enterTag() {
         int index;
         if(linkedList.isEmpty()) {
@@ -501,6 +576,10 @@ class UI extends JFrame {
         updateUIList();
     }
     
+    /**
+     * enters a new blank Data object into the linkedList object and updates
+     * the UI to display a blank index
+     */
     private void addIndex() {
         Data data = new Data();
         LinkedList<String> subList = new LinkedList<>();
