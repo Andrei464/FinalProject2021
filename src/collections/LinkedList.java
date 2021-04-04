@@ -6,6 +6,11 @@ import java.io.Serializable;
 
 
 /**
+ * LinkedList.java - The collection structure
+ * "links" together node objects into the collection to represent a list of
+ * data. Similar to an array, but dynamic meaning we can add and delete nodes
+ * by altering the links in the "chain".
+ * 
  * @author Andrei S. 
  * @param <T> the generic data type used in the class
  * @since Mar. 1, 2021 
@@ -116,7 +121,7 @@ public class LinkedList <T> implements Serializable {
      * @return the tail data
      */
     public T back() {
-        return get(length-1);                       // last node
+        return get(length-1);                   // last node
     }
     
     /**

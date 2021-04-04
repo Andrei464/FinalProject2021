@@ -25,7 +25,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
 /**
-* UI.java - 
+* UI.java - This class takes care of the User Interface (UI) that the user 
+* interacts with, it also handles most of the logic associated with the UI
+* like the the methods associated with pressing buttons.
 *
 * @author Andrei S. 
 * @since Mar. 8, 2021 
@@ -74,9 +76,13 @@ class UI extends JFrame {
     
     
     //Objects 
+    /** 
+     * An instance of the LinkedList class that 
+     * holds the data input by the user
+     */
     private LinkedList<Data>        linkedList          = new LinkedList<>();
-    private LinkedList<Data>        searchedList        = new LinkedList<>();
-    final private FileHandler       filehandler         = new FileHandler();
+    /** */
+    private FileHandler             filehandler         = new FileHandler();
     
     //UI Elements
     final private JTextArea         textbox             = new JTextArea();
@@ -171,11 +177,11 @@ class UI extends JFrame {
         textbox.setVisible(true);
         
         //Instantiate list
-//        list.setBounds(imagePanel.getX() + imagePanel.getWidth() + SPACER,
-//            SPACER, this.getWidth() - imagePanel.getWidth() - (SPACER * FOUR)
-//            - MARGIN, FRAME_HEIGHT - BUTTON_HEIGHT - SPACER - MARGIN);
         list.setBounds(imagePanel.getX() + imagePanel.getWidth() + SPACER,
-            SPACER, 200, 100);
+            SPACER, this.getWidth() - imagePanel.getWidth() - (SPACER * FOUR)
+            - MARGIN, FRAME_HEIGHT - BUTTON_HEIGHT - SPACER - MARGIN);
+//        list.setBounds(imagePanel.getX() + imagePanel.getWidth() + SPACER,
+//            SPACER, 200, 100);
         list.add("",ZERO);
         list.addMouseListener(new MouseListener() {
             @Override
@@ -219,8 +225,7 @@ class UI extends JFrame {
         deleteTag.setVisible(true);
         
         //Instantiate button
-        enterTag.setBounds(deleteTag.getX()+deleteTag.getWidth()+SPACER,
-            textbox.getY()+textbox.getHeight()+SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
+        enterTag.setBounds(deleteTag.getX()+deleteTag.getWidth()+SPACER, textbox.getY()+textbox.getHeight()+SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
         enterTag.setBorder
             (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
         enterTag.setFont(defaultFont);
@@ -235,8 +240,7 @@ class UI extends JFrame {
         enterTag.setVisible(true);
         
         //Instantiate button
-        save.setBounds(SPACER,
-            enterTag.getY()+enterTag.getHeight()+SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
+        save.setBounds(SPACER, enterTag.getY()+enterTag.getHeight()+SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
         save.setBorder
             (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
         save.setFont(defaultFont);
@@ -251,8 +255,7 @@ class UI extends JFrame {
         save.setVisible(true);
         
         //Instantiate button
-        load.setBounds(deleteTag.getX()+deleteTag.getWidth()+SPACER,
-            enterTag.getY()+enterTag.getHeight()+SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
+        load.setBounds(deleteTag.getX()+deleteTag.getWidth()+SPACER, enterTag.getY()+enterTag.getHeight()+SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
         load.setBorder
             (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
         load.setFont(defaultFont);
@@ -315,8 +318,7 @@ class UI extends JFrame {
         search.setVisible(true);
         
         //Instantiate button
-        addImage.setBounds(search.getX()+search.getWidth()+SPACER,
-            addIndex.getY()+addIndex.getHeight()+SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
+        addImage.setBounds(search.getX()+search.getWidth()+SPACER, addIndex.getY()+addIndex.getHeight()+SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
         addImage.setBorder
             (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
         addImage.setFont(defaultFont);
@@ -342,13 +344,13 @@ class UI extends JFrame {
     private void addImage(){
         
         int index = list.getSelectedIndex();
-        if(index < ZERO || linkedList.get(index).adress != null) return;
+        if(index < ZERO || linkedList.get(index).address != null) return;
 
         String directory = input(IMAGE_MSG, VALID_FILE_MSG);
         if(directory == null) return;
         File file = new File(directory);
         if(file.exists()){
-            linkedList.get(index).adress = directory;
+            linkedList.get(index).address = directory;
             ImageIcon image = new ImageIcon(directory);
             linkedList.get(index).image = image;
             imagePanel.setIcon(image);
@@ -377,6 +379,7 @@ class UI extends JFrame {
     }
     
     private void search(){
+        LinkedList<Data> searchedList = new LinkedList<>();
         String tag = input(TAG_MSG, VALID_TAG_MSG);
         boolean exists = false;
         for (int i = ZERO; i < linkedList.size(); i++) {
@@ -462,7 +465,7 @@ class UI extends JFrame {
         } else {
             if(linkedList.get(list.getSelectedIndex()) == null) return;
             if(linkedList.get(list.getSelectedIndex()).tags.isEmpty()){
-                linkedList.get(list.getSelectedIndex()).adress = "";
+                linkedList.get(list.getSelectedIndex()).address = "";
                 linkedList.get(list.getSelectedIndex()).image = null;
                 imagePanel.setIcon(null);
             }

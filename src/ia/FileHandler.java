@@ -14,7 +14,7 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 
 /**
-* Data.java - 
+* FileHandler.java - Handles saving and loading of data
 *
 * @author Andrei S. 
 * @since Mar. 8, 2021 
