@@ -196,8 +196,6 @@ class UI extends JFrame {
         list.setBounds(imagePanel.getX() + imagePanel.getWidth() + SPACER,
             SPACER, this.getWidth() - imagePanel.getWidth() - (SPACER * FOUR)
             - MARGIN, FRAME_HEIGHT - BUTTON_HEIGHT - SPACER - MARGIN);
-//        list.setBounds(imagePanel.getX() + imagePanel.getWidth() + SPACER,
-//            SPACER, 200, 100);
         list.add("",ZERO);
         list.addMouseListener(new MouseListener() {
             @Override
