@@ -458,12 +458,14 @@ class UI extends JFrame {
         if(directory == null) return;
         File file = new File(directory);
         if(file.exists()){
+            activeFile = file.getAbsolutePath();
             filehandler.saveObject(linkedList, file);
             saveActiveDatabaseFile();
         }
         else{
             try{
                 file.createNewFile();
+                activeFile = file.getAbsolutePath();
                 filehandler.saveObject(linkedList, file);
                 saveActiveDatabaseFile();
             }
