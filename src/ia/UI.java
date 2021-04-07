@@ -223,8 +223,8 @@ class UI extends JFrame {
         list.setVisible(true);
         
         //Instantiate button
-        deleteTag.setBounds(SPACER,
-            textbox.getY()+textbox.getHeight()+SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
+        deleteTag.setBounds(SPACER, textbox.getY()+textbox.getHeight()+SPACER,
+            BUTTON_WIDTH, BUTTON_HEIGHT);
         deleteTag.setBorder
             (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
         deleteTag.setText("Delete Tag");
@@ -239,7 +239,9 @@ class UI extends JFrame {
         deleteTag.setVisible(true);
         
         //Instantiate button
-        enterTag.setBounds(deleteTag.getX()+deleteTag.getWidth()+SPACER, textbox.getY()+textbox.getHeight()+SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
+        enterTag.setBounds(deleteTag.getX()+deleteTag.getWidth()+SPACER,
+            textbox.getY()+textbox.getHeight()+SPACER,
+            BUTTON_WIDTH, BUTTON_HEIGHT);
         enterTag.setBorder
             (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
         enterTag.setFont(defaultFont);
@@ -254,7 +256,8 @@ class UI extends JFrame {
         enterTag.setVisible(true);
         
         //Instantiate button
-        save.setBounds(SPACER, enterTag.getY()+enterTag.getHeight()+SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
+        save.setBounds(SPACER, enterTag.getY()+enterTag.getHeight()+SPACER,
+            BUTTON_WIDTH, BUTTON_HEIGHT);
         save.setBorder
             (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
         save.setFont(defaultFont);
@@ -269,7 +272,9 @@ class UI extends JFrame {
         save.setVisible(true);
         
         //Instantiate button
-        load.setBounds(deleteTag.getX()+deleteTag.getWidth()+SPACER, enterTag.getY()+enterTag.getHeight()+SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
+        load.setBounds(deleteTag.getX()+deleteTag.getWidth()+SPACER,
+            enterTag.getY()+enterTag.getHeight()+SPACER,
+            BUTTON_WIDTH, BUTTON_HEIGHT);
         load.setBorder
             (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
         load.setFont(defaultFont);
@@ -332,7 +337,9 @@ class UI extends JFrame {
         search.setVisible(true);
         
         //Instantiate button
-        addImage.setBounds(search.getX()+search.getWidth()+SPACER, addIndex.getY()+addIndex.getHeight()+SPACER, BUTTON_WIDTH, BUTTON_HEIGHT);
+        addImage.setBounds(search.getX()+search.getWidth()+SPACER, 
+            addIndex.getY()+addIndex.getHeight()+SPACER,
+            BUTTON_WIDTH, BUTTON_HEIGHT);
         addImage.setBorder
             (BorderFactory.createMatteBorder(ONE,ONE,ONE,ONE,BLACK));
         addImage.setFont(defaultFont);
